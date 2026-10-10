@@ -63,9 +63,11 @@ def test_agent_update_revalidates_dependencies(tmp_path):
 
 
 def test_explicit_test_runner_executes_tests_and_audits_exit_status(tmp_path):
+    import os
     workspace=tmp_path/'workspace'
     workspace.mkdir()
     (workspace/'test_demo.py').write_text('def test_demo():\n    assert 2 + 2 == 4\n')
+    initial_stat = (workspace/'test_demo.py').stat()
     result=cli(tmp_path,'test-workspace','--trust-workspace-code')
     assert result.returncode==0,result.stderr
     record=json.loads(result.stdout)
@@ -74,6 +76,8 @@ def test_explicit_test_runner_executes_tests_and_audits_exit_status(tmp_path):
     assert task['tool_calls'][0]['data']['exit_code']==0
     assert task['tool_calls'][0]['data']['command'][-2:]==['pytest','-q']
     (workspace/'test_demo.py').write_text('def test_demo():\n    assert 2 + 2 == 5\n')
+    # Same-size edits with the same timestamp must never reuse a passing cache.
+    os.utime(workspace/'test_demo.py', ns=(initial_stat.st_atime_ns, initial_stat.st_mtime_ns))
     result=cli(tmp_path,'test-workspace','--trust-workspace-code')
     assert result.returncode==1
     assert '1 failed' in json.loads(result.stdout)['output']

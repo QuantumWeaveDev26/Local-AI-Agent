@@ -1,11 +1,13 @@
 """Local CLI. Return nonzero for failed tasks and missing prerequisites."""
 import argparse
 import json
+import os
 import platform
 import shutil
 import subprocess
 import sys
 import time
+import tempfile
 from pathlib import Path
 
 import httpx
@@ -61,6 +63,9 @@ def parser():
     bench=sub.add_parser('benchmark'); bench.add_argument('--model',default='local'); bench.add_argument('--output',type=Path)
     test=sub.add_parser('test-workspace',help='Run fixed pytest command in a trusted workspace; never exposed to agents')
     test.add_argument('--trust-workspace-code',action='store_true')
+    serve=sub.add_parser('serve',help='Start the local project/conversation browser workspace')
+    serve.add_argument('--port',type=int,default=8765)
+    serve.add_argument('--open-browser',action='store_true')
     return p
 
 
@@ -153,6 +158,30 @@ def main(argv=None):
         if args.command=='init':
             seed(registry,args.model,args.base_url,args.router_model)
             emit({'status':'initialized','database':registry.db.path,'workspace':workspace.root})
+        elif args.command=='serve':
+            import webbrowser
+            from filelock import FileLock
+            from app.services.sessions import SessionStore
+            from app.services.jobs import JobWorker
+            from app.web.server import create_server
+            if not 1 <= args.port <= 65535:
+                raise ValueError('port must be between 1 and 65535')
+            with FileLock(args.data_dir/'workspace-service.lock', timeout=0):
+                seed(registry)
+                store=SessionStore(registry.db, workspace.root)
+                server=create_server(store, registry, args.port)
+                worker=JobWorker(store, registry, llm)
+                worker.start()
+                print(f'Local workspace listening on port {server.server_port}. Press Ctrl+C to stop.',flush=True)
+                if args.open_browser:
+                    webbrowser.open(f'http://127.0.0.1:{server.server_port}')
+                try:
+                    server.serve_forever()
+                except KeyboardInterrupt:
+                    print('Stopping; waiting for any in-flight model request to finish.',flush=True)
+                finally:
+                    server.server_close()
+                    worker.close()
         elif args.command in ('agents','models','tools'):
             if args.action=='list':
                 emit(getattr(registry,'list_'+args.command)())
@@ -189,7 +218,11 @@ def main(argv=None):
             task_id=registry.db.create_task('User-authorized workspace pytest run')
             command=[sys.executable,'-m','pytest','-q']
             try:
-                result=subprocess.run(command,cwd=workspace.root,capture_output=True,text=True,timeout=120)
+                # Python timestamp caches can miss same-size edits made in one second.
+                # Isolate each authorized run instead of deleting user cache directories.
+                with tempfile.TemporaryDirectory(prefix='local-agent-pycache-') as cache:
+                    env = dict(os.environ, PYTHONPYCACHEPREFIX=cache)
+                    result=subprocess.run(command,cwd=workspace.root,env=env,capture_output=True,text=True,timeout=120)
                 registry.db.event('tool_calls',task_id,{'tool_id':'user_test_runner','command':command,'status':'completed' if result.returncode==0 else 'failed','exit_code':result.returncode,'output':(result.stdout+result.stderr)[-20000:]})
                 registry.db.finish_task(task_id,'completed' if result.returncode==0 else 'failed',result=result.stdout[-20000:])
                 emit({'task_id':task_id,'exit_code':result.returncode,'output':result.stdout[-20000:],'stderr':result.stderr[-20000:]})
