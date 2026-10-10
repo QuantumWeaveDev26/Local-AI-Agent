@@ -1,4 +1,4 @@
-# Read-only audit. Run on the Dell; never reports environment variable values.
+# Read-only audit. Run on the target Windows laptop; never reports environment variable values.
 $ErrorActionPreference = 'Stop'
 $os = Get-CimInstance Win32_OperatingSystem
 $cpu = Get-CimInstance Win32_Processor

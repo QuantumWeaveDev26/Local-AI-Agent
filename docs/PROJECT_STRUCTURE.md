@@ -26,6 +26,7 @@ is `C:\Projects\Local-AI-Agent`.
 | `docs/validation/` | Benchmark/workflow evidence and publication review |
 | `docs/research/` | Source-linked external product and architecture research |
 | `docs/roadmap/` | Evolving product direction and proposed milestones |
+| `docs/deployment/` | Target-machine setup and private-state transfer procedures |
 | `data/` | Generated SQLite/audit/benchmark files; ignored by Git |
 | `workspace/` | Explicitly approved input/output files; ignored by Git |
 | `.venv/` | Project Python dependencies; ignored by Git |

@@ -7,7 +7,7 @@ No ChatGPT Agent subscription or cloud API key is needed for local execution.
 
 The entire codebase is in the repository root, `/workspace/Local-AI-Agent` in the
 cloud. See the [folder map](docs/PROJECT_STRUCTURE.md) for source locations. On the
-Dell, use a dedicated checkout such as `C:\Projects\Local-AI-Agent`; this cloud
+personal laptop, use a dedicated checkout such as `C:\Projects\Local-AI-Agent`; this cloud
 session has not created or modified a Windows folder.
 
 ```text
@@ -26,7 +26,7 @@ Local-AI-Agent/
 
 **Current validation:** automated tests exercise real SQLite/files/documents and
 local HTTP protocol fixtures. See [validation evidence](docs/validation.md) for
-real inference status. Windows/Dell benchmarks require execution on that machine.
+real inference status. Windows/GPU benchmarks require execution on the target machine.
 
 ## Get the source
 
@@ -44,15 +44,17 @@ Publishing a Codex cloud environment retains its workspace/setup. Source appears
 on GitHub only after a Git commit and push. Model weights, private documents,
 SQLite databases, local credentials and virtual environments are excluded by design.
 
-## Windows 11 on the Dell
+## Windows on your current laptop
 
-Use the Dell Precision 5560 as the primary V1 host. The HP remains optional.
-Open PowerShell in the checkout and run:
+The current RTX 3050 6 GB personal laptop is the first deployment target. The
+office Dell is a future destination and does not block development. Read the
+[deployment and transfer guide](docs/deployment/portable-windows.md), then open
+PowerShell in the checkout and run:
 
 ```powershell
 powershell -NoProfile -File scripts/audit-windows.ps1
 powershell -NoProfile -File scripts/setup-windows.ps1
-.\.venv\Scripts\python.exe main.py benchmark --output data\benchmark-dell.json
+.\.venv\Scripts\python.exe main.py benchmark --output data\benchmark-personal-laptop.json
 .\.venv\Scripts\python.exe main.py run "Create a Meta Ads campaign strategy for a restaurant."
 .\.venv\Scripts\python.exe main.py recruit candidate.txt job-description.md
 ```
@@ -68,7 +70,7 @@ The 1.7B model misrouted a candidate assessment; 4B passed the four routing prob
 an unsuccessful template/parser configuration trial. Defaults retain the original
 verified model templates and use 1.7B for tools. The 1.7B coding benchmark failed
 manual quality review. Review generated code and business results; benchmark on the
-Dell before selecting a stronger execution model. Larger models may offload to RAM
+actual target laptop before selecting a stronger execution model. Larger models may offload to RAM
 and become slow; do not download them all.
 
 The benchmark records host CPU/RAM, Ollama process RSS, load time, token throughput,
@@ -159,7 +161,7 @@ before any hiring decision. Demonstration profiles are fictional.
 This prepared cloud instance retains two benchmark candidates: `local` is
 `qwen3:1.7b`, shared by specialists, and `router` is `qwen3:4b`, assigned to Manager.
 Fresh Windows initialization uses the same two-model profile. CPU-only cloud inference is
-slow; do not infer Dell GPU performance from these measurements.
+slow; do not infer target GPU performance from these measurements.
 
 CLI output contains the task ID, selected agent, model attempts, status, result and
 error. Failed tasks return a nonzero exit code. Task inspection includes timestamps,

@@ -11,6 +11,12 @@ evidence, coordinates configurable specialists, performs permitted work, and sho
 what happened. The user confirmed that both Grok's conversational/research behavior
 and autonomous tool execution inspired this direction.
 
+The first target is the user's personal RTX 3050 6 GB laptop. The office Dell is
+unavailable and is not a development prerequisite. The original handoff reports
+16 GB system RAM and a nearly full SSD on the personal laptop; refresh those
+measurements before selecting its runtime profile. Transfer to additional systems
+is a core requirement. See the [deployment/transfer contract](../deployment/portable-windows.md).
+
 The original recruitment, marketing, developer and SEO examples are starter uses.
 The platform should also support specialists and workflows not yet imagined,
 through configuration and stable capability interfaces.
@@ -83,13 +89,19 @@ Remaining baseline work during the next coding milestone:
 
 - Preserve reviewed source through Git commits; distinguish that from the working
   cloud snapshot. Remote publication is a separate action.
-- Audit and benchmark the actual Dell before choosing its execution model profile.
+- Audit and benchmark the current personal laptop before choosing its execution model profile.
 - Turn the existing routing, coding and tool-timeout failures into fixed evaluation
   examples. Keep their expected behavior visible when changing models or prompts.
 
 Exit evidence: reproducible reviewed source, actual host measurements, and a small
-evaluation corpus with known failures. Cloud CPU results cannot substitute for Dell
-GPU measurements.
+evaluation corpus with known failures. Cloud CPU results cannot substitute for the target laptop's GPU measurements.
+
+Before the persistent workspace milestone, preserve a tested transfer contract:
+consistent SQLite backup, selected workspace files, required model identities,
+per-host credentials and clean dependency installation. Add automated transfer
+validation as private state and schema migrations grow. Features remain on the
+roadmap; hardware profiles control models/context/concurrency rather than silently
+disabling features.
 
 ## Milestone 1 — persistent assistant workspace
 
@@ -108,7 +120,7 @@ undone merely because a later cancellation was requested.
 
 A task display should show the selected agent/model, current operation, completed
 tool receipts, source references, saved artifacts and validation outcomes. It
-should remain usable when an inference request is slow on the Dell.
+should remain usable when an inference request is slow on the target laptop.
 
 Exit evidence:
 
