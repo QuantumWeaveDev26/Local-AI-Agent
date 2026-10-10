@@ -1,0 +1,103 @@
+{
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "python": "3.12.14",
+  "model": {
+    "id": "local",
+    "enabled": true,
+    "name": "Local Ollama",
+    "provider": "ollama",
+    "model_name": "qwen3:1.7b",
+    "base_url": "http://127.0.0.1:11434",
+    "context_length": 8192,
+    "notes": "",
+    "api_key_env": null,
+    "thinking": false
+  },
+  "ram_total_gib": 33.29,
+  "cpu_count": 5,
+  "checks": [
+    {
+      "name": "reasoning",
+      "status": "completed",
+      "result": "To find the **average speed** of the train, we use the formula:\n\n$$\n\\text{Average speed} = \\frac{\\text{Total distance}}{\\text{Total time}}\n$$\n\n### Step 1: Calculate total distance\n- First part: 60 km in 1 hour  \n- Second part: 30 km in 30 minutes (which is 0.5 hours)\n\n$$\n\\text{Total distance} = 60 + 30 = 90 \\text{ km}\n$$\n\n### Step 2: Calculate total time\n- Total time = 1 hour + 0.5 hours = **1.5 hours**\n\n### Step 3: Calculate average speed\n\n$$\n\\text{Average speed} = \\frac{90 \\text{ km}}{1.5 \\text{ hours}} = 60 \\text{ km/h}\n$$\n\n### \u2705 Final Answer:\n$$\n\\boxed{60} \\text{ km/h}\n$$\n\n**Explanation:** The train travels a total of 90 km in 1.5 hours, so its average speed is 60 km/h.",
+      "tool_calls": [],
+      "metrics": {
+        "completion_tokens": 244,
+        "tokens_per_second": 3.875697425000926,
+        "load_seconds": 4.536939818,
+        "generation_seconds": 62.956411,
+        "elapsed_seconds": 68.81219656599978
+      },
+      "quality": "Requires human review; generated code was not executed",
+      "elapsed_seconds": 68.81261418300028,
+      "peak_system_used_gib": 3.786212921142578,
+      "peak_ollama_rss_gib": 2.2488784790039062,
+      "mean_host_cpu_percent": 77.180372250423,
+      "manual_review": "Correct total distance/time: 90 km / 1.5 h = 60 km/h."
+    },
+    {
+      "name": "structured",
+      "status": "completed",
+      "result": "{\n  \"city\": \"Delhi\",\n  \"count\": 3\n}",
+      "tool_calls": [],
+      "metrics": {
+        "completion_tokens": 18,
+        "tokens_per_second": 8.835782563172165,
+        "load_seconds": 0.002505854,
+        "generation_seconds": 2.037171,
+        "elapsed_seconds": 2.9814071619998685
+      },
+      "valid": true,
+      "elapsed_seconds": 2.9816864609997538,
+      "peak_system_used_gib": 3.229999542236328,
+      "peak_ollama_rss_gib": 2.2937965393066406,
+      "mean_host_cpu_percent": 80.6923076923077
+    },
+    {
+      "name": "coding",
+      "status": "completed",
+      "result": "Here's a Python function called `unique_in_order` that removes duplicates while preserving the order of elements:\n\n```python\ndef unique_in_order(values):\n    if not values:\n        return []\n    \n    result = [values[0]]\n    for i in range(1, len(values)):\n        if values[i] != values[i-1]:\n            result.append(values[i])\n    \n    return result\n```\n\n### Example usage:\n\n```python\nprint(unique_in_order([1, 2, 2, 3, 3, 4]))  # Output: [1, 2, 3, 4]\nprint(unique_in_order([\"a\", \"a\", \"b\"]))     # Output: [\"a\", \"b\"]\nprint(unique_in_order([]))                 # Output: []\n```\n\n### Explanation:\n- The function starts with the first element of the list.\n- It then iterates through the rest of the list, adding an element to the result list **only if** it is different from the previous element.\n- This ensures the order is preserved and duplicates are removed.",
+      "tool_calls": [],
+      "metrics": {
+        "completion_tokens": 222,
+        "tokens_per_second": 3.9762743946001335,
+        "load_seconds": 0.002880445,
+        "generation_seconds": 55.831157,
+        "elapsed_seconds": 56.70157319500004
+      },
+      "quality": "Requires human review; generated code was not executed",
+      "elapsed_seconds": 56.70663752900009,
+      "peak_system_used_gib": 3.2355575561523438,
+      "peak_ollama_rss_gib": 2.2940025329589844,
+      "mean_host_cpu_percent": 80.65492662473795,
+      "manual_review": "Incorrect for general deduplication: generated function removes adjacent duplicates only; [1,2,1] remains [1,2,1]. Generated code was not executed."
+    },
+    {
+      "name": "tool_calling",
+      "status": "completed",
+      "result": "",
+      "tool_calls": [
+        {
+          "id": "call_b9ptgpd6",
+          "name": "document_read",
+          "arguments": {
+            "path": "candidate.txt"
+          }
+        }
+      ],
+      "metrics": {
+        "completion_tokens": 21,
+        "tokens_per_second": 5.288082123411749,
+        "load_seconds": 0.029037656,
+        "generation_seconds": 3.971194,
+        "elapsed_seconds": 6.923081100000218
+      },
+      "valid": true,
+      "elapsed_seconds": 6.923331431000406,
+      "peak_system_used_gib": 3.257984161376953,
+      "peak_ollama_rss_gib": 2.3314208984375,
+      "mean_host_cpu_percent": 80.74333333333334
+    }
+  ],
+  "gpu_snapshot": "No NVIDIA GPU is available; VRAM and GPU utilization are unmeasured"
+}

@@ -1,0 +1,9 @@
+{
+  "id": "seo",
+  "name": "SEO Agent",
+  "description": "Search engine optimization, technical SEO audits, keyword and content planning",
+  "instructions": "Audit supplied website documents and propose actionable SEO improvements. Label assumptions. Use only assigned tools and do not claim online research without evidence.",
+  "model_id": "local",
+  "permission_level": 2,
+  "tools": ["document_read", "filesystem_write"]
+}

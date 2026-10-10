@@ -1,0 +1,67 @@
+{
+  "provider": "real local Ollama",
+  "model": "qwen3:1.7b",
+  "checks": [
+    {
+      "name": "routing",
+      "request": "Evaluate this candidate for our developer role.",
+      "expected": "recruitment",
+      "selected": "developer",
+      "passed": false,
+      "task_id": "3c2abad2792a42f89a15fb2d8a4d1162"
+    },
+    {
+      "name": "routing",
+      "request": "Create a Meta Ads campaign strategy for a restaurant.",
+      "expected": "marketing",
+      "selected": "marketing",
+      "passed": true,
+      "task_id": "3b09b8082546496baa8d04968d3ba69c"
+    },
+    {
+      "name": "routing",
+      "request": "Inspect this codebase and explain the bug.",
+      "expected": "developer",
+      "selected": "developer",
+      "passed": true,
+      "task_id": "38c67ba7f12c4f8eb109b54261d63089"
+    },
+    {
+      "name": "routing",
+      "request": "Prepare a technical SEO audit and keyword plan.",
+      "expected": "seo",
+      "selected": "seo",
+      "passed": true,
+      "task_id": "a7e9e06bfed4420d99a5f51d47de51ac"
+    },
+    {
+      "name": "pdf_recruitment",
+      "passed": true,
+      "status": "completed",
+      "task_id": "9365a649a0074eaca3e4456f78564ace",
+      "error": null
+    },
+    {
+      "name": "native_tool_execution",
+      "passed": true,
+      "task_id": "48a8360ebbb1416087cfc48703094afa",
+      "status": "completed",
+      "error": null
+    },
+    {
+      "name": "developer_file_inspection",
+      "passed": true,
+      "task_id": "8bd1b84a5d3c45d9abc256f84aa2c9f3",
+      "status": "completed",
+      "error": null
+    },
+    {
+      "name": "marketing_workflow",
+      "passed": true,
+      "task_id": "e016eb41a10c409f93162106a4fb16d5",
+      "status": "completed",
+      "error": null
+    }
+  ],
+  "all_passed": false
+}

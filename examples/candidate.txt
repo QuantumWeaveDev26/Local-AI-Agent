@@ -1,0 +1,5 @@
+Candidate: Alex Morgan (fictional demonstration profile)
+Experience: Three years developing Python backend applications.
+Skills: Python, FastAPI, SQLite, pytest, Git.
+Project: Built an inventory API with SQLite persistence and automated API tests.
+No documented experience with Kubernetes or production cloud deployments.

@@ -1,0 +1,42 @@
+{
+  "verified_at_utc": "2026-10-10T07:18:05.810474+00:00",
+  "project_root": "/workspace/Local-AI-Agent",
+  "restored_dependencies": true,
+  "pytest": {
+    "passed": 58,
+    "failed": 0,
+    "skipped": 0,
+    "duration_seconds": 17.46
+  },
+  "pip_check": "No broken requirements found",
+  "ollama_version": "0.40.2",
+  "model_files_restored": true,
+  "models": {
+    "local": "qwen3:1.7b",
+    "router": "qwen3:4b"
+  },
+  "real_inference": {
+    "task_id": "1ce6d6d297614006a76ecc41b88ee2fc",
+    "status": "completed",
+    "result": "READY"
+  },
+  "real_routing": {
+    "scope": "routing-only, real restored local 4B inference",
+    "request": "Evaluate this candidate for our developer role.",
+    "selected_agent": "recruitment",
+    "task_id": "70a96fa94eda4e2d81a68b9234fb504a",
+    "passed": true
+  },
+  "publication_config": {
+    "base_version_id": "9180c8df-b41d-459b-b0d3-8955948e1218~cecfgver_6ac9e341b520819ab9d0acf3a7d01874",
+    "draft_id": null,
+    "mount_path": "Local-AI-Agent",
+    "repository_ref": "HEAD",
+    "network_policy": "unrestricted"
+  },
+  "limitations": [
+    "Linux CPU only; Dell/Windows not exercised",
+    "Application source remains untracked in an unborn Git checkout; snapshot restoration verified, remote Git reconstruction not established",
+    "Past 4B native tool timeouts and 1.7B coding quality failure remain documented"
+  ]
+}

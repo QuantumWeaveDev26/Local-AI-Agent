@@ -1,0 +1,101 @@
+{
+  "model": "qwen3:4b",
+  "checks": [
+    {
+      "request": "Evaluate this candidate for our developer role.",
+      "expected": "recruitment",
+      "selected": "recruitment",
+      "passed": true,
+      "task_id": "344ff086dc014525b9f91eb2b7e90f92",
+      "runs": [
+        {
+          "agent_id": "manager",
+          "model_id": "router",
+          "started_at": "2026-10-10T06:29:49.744801+00:00",
+          "completed_at": "2026-10-10T06:31:07.990482+00:00",
+          "duration_seconds": 78.2456958350001,
+          "status": "completed",
+          "metrics": {
+            "completion_tokens": 103,
+            "tokens_per_second": 1.8052405853767766,
+            "load_seconds": 11.478318785,
+            "generation_seconds": 57.056107,
+            "elapsed_seconds": 78.24549988399986
+          }
+        }
+      ]
+    },
+    {
+      "request": "Create a Meta Ads campaign strategy for a restaurant.",
+      "expected": "marketing",
+      "selected": "marketing",
+      "passed": true,
+      "task_id": "e031be8186094f1c83e2e55f8f5b09b9",
+      "runs": [
+        {
+          "agent_id": "manager",
+          "model_id": "router",
+          "started_at": "2026-10-10T06:31:08.031444+00:00",
+          "completed_at": "2026-10-10T06:31:51.456973+00:00",
+          "duration_seconds": 43.42555640700016,
+          "status": "completed",
+          "metrics": {
+            "completion_tokens": 101,
+            "tokens_per_second": 2.7747738332673566,
+            "load_seconds": 0.017581976,
+            "generation_seconds": 36.399363,
+            "elapsed_seconds": 43.42538800800003
+          }
+        }
+      ]
+    },
+    {
+      "request": "Inspect this codebase and explain the bug.",
+      "expected": "developer",
+      "selected": "developer",
+      "passed": true,
+      "task_id": "1e96f727b7224affa01c1619580282d2",
+      "runs": [
+        {
+          "agent_id": "manager",
+          "model_id": "router",
+          "started_at": "2026-10-10T06:31:51.518967+00:00",
+          "completed_at": "2026-10-10T06:33:03.421880+00:00",
+          "duration_seconds": 71.9029386919999,
+          "status": "completed",
+          "metrics": {
+            "completion_tokens": 96,
+            "tokens_per_second": 1.5172841423070913,
+            "load_seconds": 0.015918172,
+            "generation_seconds": 63.270944,
+            "elapsed_seconds": 71.90278947499974
+          }
+        }
+      ]
+    },
+    {
+      "request": "Prepare a technical SEO audit and keyword plan.",
+      "expected": "seo",
+      "selected": "seo",
+      "passed": true,
+      "task_id": "ddb07094b32744ac8c19d47565aa21bd",
+      "runs": [
+        {
+          "agent_id": "manager",
+          "model_id": "router",
+          "started_at": "2026-10-10T06:33:03.449288+00:00",
+          "completed_at": "2026-10-10T06:33:29.325928+00:00",
+          "duration_seconds": 25.876665962999596,
+          "status": "completed",
+          "metrics": {
+            "completion_tokens": 43,
+            "tokens_per_second": 2.427574582571494,
+            "load_seconds": 0.016049318,
+            "generation_seconds": 17.713153,
+            "elapsed_seconds": 25.87645739000027
+          }
+        }
+      ]
+    }
+  ]
+}

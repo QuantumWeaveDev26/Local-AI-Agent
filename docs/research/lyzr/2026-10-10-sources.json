@@ -1,0 +1,607 @@
+{
+  "researched_date": "2026-10-10",
+  "user_timezone": "Asia/Calcutta",
+  "method": "Read-only HTTPS retrieval of official pages, public documentation and public repository files; no paid product login or live product test. Digests identify retrieved text for available pages, not signed publisher artifacts.",
+  "pages": [
+    {
+      "id": "00",
+      "url": "https://docs.lyzr.ai/llms.txt",
+      "final_url": "https://docs.lyzr.ai/llms.txt",
+      "characters": 3235,
+      "content_sha256": "a5ccce4803a7d088908e1d8fed5a73848a443ec7b47c05d319ba126121dea417"
+    },
+    {
+      "id": "01",
+      "url": "https://docs.lyzr.ai/enterprise/get-started/intro",
+      "final_url": "https://docs.lyzr.ai/enterprise/get-started/intro",
+      "characters": 4438,
+      "content_sha256": "6a86b7b1b5940e8ce4894bb2b098877475aba23fe6cf2e637e09899cbcfa699a"
+    },
+    {
+      "id": "02",
+      "url": "https://www.lyzr.ai/agentic-os/",
+      "final_url": "https://www.lyzr.ai/agentic-os/",
+      "characters": 19311,
+      "content_sha256": "ca84473b7e6dfbc89e594c763d755158a9cb0bc2863b0e06c9a25d443c891f3f"
+    },
+    {
+      "id": "03",
+      "url": "https://www.lyzr.ai/opencontroller/",
+      "final_url": "https://www.lyzr.ai/opencontroller/",
+      "characters": 9924,
+      "content_sha256": "df1e2ce1e6105a8269465f8c21b193ff6e27081c558bf3cdfcda4858486591fa"
+    },
+    {
+      "id": "04",
+      "url": "https://www.lyzr.ai/sovereign-ai/",
+      "final_url": "https://www.lyzr.ai/sovereign-ai/",
+      "characters": 17724,
+      "content_sha256": "ef0dfb363e3ef6e8953f546ae93293d609dd560a79ba1f240bf26f6b88b7c45b"
+    },
+    {
+      "id": "05",
+      "url": "https://www.lyzr.ai/responsible-ai-as-a-service/",
+      "final_url": "https://www.lyzr.ai/responsible-ai-as-a-service/",
+      "characters": 11122,
+      "content_sha256": "6f93bdc264d52466d54b8f3a1b6d692349290154d24e25b4f3206c26004c27f1"
+    },
+    {
+      "id": "06",
+      "url": "https://www.lyzr.ai/orchestration-as-a-service/",
+      "final_url": "https://www.lyzr.ai/orchestration-as-a-service/",
+      "characters": 11492,
+      "content_sha256": "4cbce8df4c7d9e7af05efe8978d455176086b561de7227a85ad2174c335d6057"
+    },
+    {
+      "id": "07",
+      "url": "https://www.lyzr.ai/agents-as-a-service/",
+      "final_url": "https://www.lyzr.ai/agents-as-a-service/",
+      "characters": 10616,
+      "content_sha256": "08c8094f9cb1c32e91c83e6b9da335ad0f38b6c8d2372319646df87c27dade85"
+    },
+    {
+      "id": "08",
+      "url": "https://www.lyzr.ai/agent-types-in-production/",
+      "final_url": "https://www.lyzr.ai/agent-types-in-production/",
+      "characters": 5981,
+      "content_sha256": "3acc77f651f4bcd28e3bc053714fc64787afb41358f962b98460956370cf0363"
+    },
+    {
+      "id": "09",
+      "url": "https://www.lyzr.ai/hallucination-manager-as-a-service/",
+      "final_url": "https://www.lyzr.ai/hallucination-manager-as-a-service/",
+      "characters": 11099,
+      "content_sha256": "0171007d92cce099bfdb6bde713d3a9c09e5ad7ba2d5499328c8860852ac21bd"
+    },
+    {
+      "id": "10",
+      "url": "https://www.lyzr.ai/knowledge-base-as-a-service/",
+      "final_url": "https://www.lyzr.ai/knowledge-base-as-a-service/",
+      "characters": 11410,
+      "content_sha256": "e2d2ee0e1214deb4a9c22d5d47761d688c03ae768c76b2d602e6eecb5088b956"
+    },
+    {
+      "id": "11",
+      "url": "https://www.lyzr.ai/knowledge-graph-as-a-service/",
+      "final_url": "https://www.lyzr.ai/knowledge-graph-as-a-service/",
+      "characters": 11121,
+      "content_sha256": "735534bf92f7cd28f83824c9b1843481a56c927fd0c05ff7e3f31cf1e8c4e579"
+    },
+    {
+      "id": "12",
+      "url": "https://www.lyzr.ai/cognis/",
+      "final_url": "https://www.lyzr.ai/cognis/",
+      "characters": 15340,
+      "content_sha256": "98ddea87f18efbf4bf288b3d26f466f6301ae7d96966a910b5bf837a96aca03b"
+    },
+    {
+      "id": "13",
+      "url": "https://www.lyzr.ai/oss/opengap/",
+      "final_url": "https://www.lyzr.ai/oss/opengap/",
+      "characters": 11133,
+      "content_sha256": "be16b6c792c2629cd02bb22a5592de6948254ce460d421c266ad717e04af77ca"
+    },
+    {
+      "id": "14",
+      "url": "https://www.lyzr.ai/oss/gitagent/",
+      "final_url": "https://www.lyzr.ai/oss/gitagent/",
+      "characters": 11849,
+      "content_sha256": "385ad565c1ea2e3acc84f5219861c312159980896eaf3ff51e48460eb2e652a5"
+    },
+    {
+      "id": "15",
+      "url": "https://www.lyzr.ai/pricing/",
+      "final_url": "https://www.lyzr.ai/pricing/",
+      "characters": 56,
+      "content_sha256": "d091fcdfb7c8cf02794a05ca83baa373fccb8ab82349fdfe8233a1eb0caa93db"
+    },
+    {
+      "id": "16",
+      "url": "https://www.lyzr.ai/templates/",
+      "final_url": "https://www.lyzr.ai/templates/",
+      "characters": 6039,
+      "content_sha256": "00dea6735dcd8dbb69ddccea6f5088eaaf8038a15bb20afaec4a96283fcdfe90"
+    },
+    {
+      "id": "17",
+      "url": "https://www.lyzr.ai/jazon/",
+      "final_url": "https://www.lyzr.ai/jazon/",
+      "characters": 16726,
+      "content_sha256": "340204e85b5b7ee36193951fdc509f0ed12c4be325635d5f5c66c3d13ee52777"
+    },
+    {
+      "id": "18",
+      "url": "https://www.lyzr.ai/skott/",
+      "final_url": "https://www.lyzr.ai/skott/",
+      "characters": 17274,
+      "content_sha256": "2d89cadb5ddebd6c43912acb97f4e62c89d8f8e5ed79a048f6e6455489efe192"
+    },
+    {
+      "id": "19",
+      "url": "https://www.lyzr.ai/jeff/",
+      "final_url": "https://www.lyzr.ai/jeff/",
+      "characters": 17440,
+      "content_sha256": "cb6cc0d399212021c592ac1e56dc5cd1e74ae9c8307d93422a6546d208671d94"
+    },
+    {
+      "id": "20",
+      "url": "https://www.lyzr.ai/diane/",
+      "final_url": "https://www.lyzr.ai/diane/",
+      "characters": 18052,
+      "content_sha256": "ab5bac4eca0f81762eb981a453563ec1da435ffa98050b70247a3ea0f8459a9e"
+    },
+    {
+      "id": "21",
+      "url": "https://www.lyzr.ai/playbook/how-to-take-agents-to-production/",
+      "final_url": "https://www.lyzr.ai/playbook/how-to-take-agents-to-production/",
+      "characters": 70316,
+      "content_sha256": "fb0f21bf8381359ca22d5caa44b92fd2497d9a45533c34b45013db6bc2ce1ff5"
+    },
+    {
+      "id": "22",
+      "url": "https://architect.new/",
+      "final_url": "https://www.architect.new/",
+      "characters": 14,
+      "content_sha256": "6ff4809092e0ff5c080ddb05b7ec8a554ac60fb57e6c0f86627c6090f2c696e5"
+    },
+    {
+      "id": "23",
+      "url": "https://studio.lyzr.ai/",
+      "final_url": "https://studio.lyzr.ai/",
+      "characters": 17,
+      "content_sha256": "481b81d34777f0459c2579e3607c80fb97788766c1507a62d126c64701c404e9"
+    },
+    {
+      "id": "d00",
+      "url": "https://docs.lyzr.ai/enterprise/get-started/architecture",
+      "final_url": "https://docs.lyzr.ai/enterprise/get-started/architecture",
+      "characters": 6675,
+      "content_sha256": "e7be44d921eb7957c2f88bed2b4e8ef3a240585ea6a8e18579abc01e723432b9"
+    },
+    {
+      "id": "d01",
+      "url": "https://docs.lyzr.ai/enterprise/get-started/quickstart",
+      "final_url": "https://docs.lyzr.ai/enterprise/get-started/quickstart",
+      "characters": 4190,
+      "content_sha256": "0a93ff79d401e58406d7f4a95f1e1d6718dc17fcce9583b32395a633c343fc93"
+    },
+    {
+      "id": "d02",
+      "url": "https://docs.lyzr.ai/enterprise/get-started/product-guide",
+      "final_url": "https://docs.lyzr.ai/enterprise/get-started/product-guide",
+      "characters": 3842,
+      "content_sha256": "e3b716445729ff3a1c3d5f3a24b99b89024c8d2fbbc2365b7e2ca18ce6c155ea"
+    },
+    {
+      "id": "d03",
+      "url": "https://docs.lyzr.ai/enterprise/get-started/concepts/agents",
+      "final_url": "https://docs.lyzr.ai/enterprise/get-started/concepts/agents",
+      "characters": 3323,
+      "content_sha256": "a2c5cea741deb834968d1da42f511202a92a2bac1cbb70240bcbd215f4882a24"
+    },
+    {
+      "id": "d04",
+      "url": "https://docs.lyzr.ai/enterprise/get-started/concepts/multi-agent-orchestration",
+      "final_url": "https://docs.lyzr.ai/enterprise/get-started/concepts/multi-agent-orchestration",
+      "characters": 3691,
+      "content_sha256": "4bde61400c17f5c69a65332cedc2047add5b55d015d09f8848adfdf76d85e36b"
+    },
+    {
+      "id": "d05",
+      "url": "https://docs.lyzr.ai/enterprise/get-started/concepts/tool-calling",
+      "final_url": "https://docs.lyzr.ai/enterprise/get-started/concepts/tool-calling",
+      "characters": 3554,
+      "content_sha256": "36077f95ecd098ecbfa8d5a668517d69851b0dd073893c927f7c1fc408e04b0a"
+    },
+    {
+      "id": "d06",
+      "url": "https://docs.lyzr.ai/enterprise/get-started/concepts/memory-context",
+      "final_url": "https://docs.lyzr.ai/enterprise/get-started/concepts/memory-context",
+      "characters": 3948,
+      "content_sha256": "6d9850cc7ef28337b474924c4272f3c348bdc18982428eb82ccfe6722282faae"
+    },
+    {
+      "id": "d07",
+      "url": "https://docs.lyzr.ai/enterprise/get-started/concepts/skills",
+      "final_url": "https://docs.lyzr.ai/enterprise/get-started/concepts/skills",
+      "characters": 2040,
+      "content_sha256": "0fcb3673e2f9af54a82ef03f6fcc67e62e271e5175f5699fc1e309667e9e05dd"
+    },
+    {
+      "id": "d08",
+      "url": "https://docs.lyzr.ai/enterprise/get-started/concepts/rag-knowledge",
+      "final_url": "https://docs.lyzr.ai/enterprise/get-started/concepts/rag-knowledge",
+      "characters": 5378,
+      "content_sha256": "c5308114c944403599f1156d4f3fe487ce74019965312595f68f49c6301046e8"
+    },
+    {
+      "id": "d09",
+      "url": "https://docs.lyzr.ai/enterprise/get-started/concepts/evaluating-agents",
+      "final_url": "https://docs.lyzr.ai/enterprise/get-started/concepts/evaluating-agents",
+      "characters": 3740,
+      "content_sha256": "dfb58b3e6aebc17311b362d0b79019ac12132d9d3f5028bab30902b013e9c85b"
+    },
+    {
+      "id": "d10",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/introduction",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/introduction",
+      "characters": 2950,
+      "content_sha256": "6c734975ed80fdb7211ab8f8b48dbc8adfa347fd4f1e669f9b6d044fef8628cd"
+    },
+    {
+      "id": "d11",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/agents/studio",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/agents/studio",
+      "characters": 6354,
+      "content_sha256": "9fcf5ea479d48c74f15a081e90e55be0e72f47a99de19ece6ebc44b1dc06eb3d"
+    },
+    {
+      "id": "d12",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/agents/conversational-builder",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/agents/conversational-builder",
+      "characters": 3217,
+      "content_sha256": "7034bc5c0e81350157ccae33a5314b9e7607424615221cc2806ce5adfcdfb10c"
+    },
+    {
+      "id": "d13",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/knowledgebase/studiokb",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/knowledgebase/studiokb",
+      "characters": 5346,
+      "content_sha256": "8a79102f714a908a3d377d33827bac183646111f0ae007703a3ba535c81e71ba"
+    },
+    {
+      "id": "d14",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/knowledgebase/studiosem",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/knowledgebase/studiosem",
+      "characters": 4197,
+      "content_sha256": "adda9a0e06b5b345097d6f5980a0cff36d8e057d36f893765fb701784dc70049"
+    },
+    {
+      "id": "d15",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/tools/overview",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/tools/overview",
+      "characters": 2628,
+      "content_sha256": "e5757f737f2b98619209a892d62c24c5aed9e7129041343f96cde1b2fd9d2dfa"
+    },
+    {
+      "id": "d16",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/tools/pre-built",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/tools/pre-built",
+      "characters": 3985,
+      "content_sha256": "76cbcd0ed5e38ba4747c5f14b4d8eb6953ca9a77a1aee560bbb3c87fc40dbf09"
+    },
+    {
+      "id": "d17",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/voice/overview",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/voice/overview",
+      "characters": 2321,
+      "content_sha256": "785e4669d45be75e5084eb2bfa1f312968ba7017ded883b1e18098d5368b521e"
+    },
+    {
+      "id": "d18",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/eval/agent-eval",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/eval/agent-eval",
+      "characters": 1780,
+      "content_sha256": "59d9dd28a715d91a2db374e7fbe27c27bdcaa9d94f9743526b6b01f99440a5ba"
+    },
+    {
+      "id": "d19",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/governance/roles-permissions",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/governance/roles-permissions",
+      "characters": 2560,
+      "content_sha256": "53c504cd0d48d07f9889c995a854d43244508d21e5c8181a63c3600e1e88fe2c"
+    },
+    {
+      "id": "d20",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/governance/audit-log",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/governance/audit-log",
+      "characters": 1520,
+      "content_sha256": "fa4966c4146804c2d04290dac85e0e35ab970dc2186d4cb27ad814ccbc55c51d"
+    },
+    {
+      "url": "https://docs.lyzr.ai/enterprise/architect/overview",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://docs.lyzr.ai/enterprise/architect/quickstart",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://docs.lyzr.ai/enterprise/architect/building-agents",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://docs.lyzr.ai/enterprise/architect/deployment",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "id": "d25",
+      "url": "https://docs.lyzr.ai/enterprise/integrations/overview",
+      "final_url": "https://docs.lyzr.ai/enterprise/integrations/overview",
+      "characters": 1966,
+      "content_sha256": "2af421414ae11da4fb3466fe06538af321ee2c295aca50f2d2c832864853068f"
+    },
+    {
+      "id": "d26",
+      "url": "https://docs.lyzr.ai/enterprise/integrations/vector-stores",
+      "final_url": "https://docs.lyzr.ai/enterprise/integrations/vector-stores",
+      "characters": 1880,
+      "content_sha256": "f3e45f181e90cd2ff4ff87dfd7a042108618320c9148ac7b785d53cb23a2d765"
+    },
+    {
+      "id": "d27",
+      "url": "https://docs.lyzr.ai/enterprise/integrations/a2a-protocol",
+      "final_url": "https://docs.lyzr.ai/enterprise/integrations/a2a-protocol",
+      "characters": 12235,
+      "content_sha256": "77d8c0ee4ac8be6b0c3439c900132e7289842b751dc6044610e7a9487536e639"
+    },
+    {
+      "id": "d28",
+      "url": "https://docs.lyzr.ai/enterprise/integrations/mcp",
+      "final_url": "https://docs.lyzr.ai/enterprise/integrations/mcp",
+      "characters": 1815,
+      "content_sha256": "3691562bf48e921e37618da410b077f783d756f8754276c4ccd360d99cba84ee"
+    },
+    {
+      "id": "d29",
+      "url": "https://docs.lyzr.ai/enterprise/lyzr-blocks/overview",
+      "final_url": "https://docs.lyzr.ai/enterprise/lyzr-blocks/overview",
+      "characters": 3656,
+      "content_sha256": "0ba8e8f73c0e4c9f290fc2c98a1c39880ddf2984634c208061711e8936743883"
+    },
+    {
+      "id": "d30",
+      "url": "https://docs.lyzr.ai/enterprise/lyzr-blocks/knowledge-base/overview",
+      "final_url": "https://docs.lyzr.ai/enterprise/lyzr-blocks/knowledge-base/overview",
+      "characters": 1654,
+      "content_sha256": "b3cf4de96fde60caae76b96eb37d55b605d4b9d809ddbce6f1dc6b7963aaec19"
+    },
+    {
+      "id": "x00",
+      "url": "https://docs.lyzr.ai/enterprise/architect/introduction/overview/introduction",
+      "final_url": "https://docs.lyzr.ai/enterprise/architect/introduction/overview/introduction",
+      "characters": 2362,
+      "content_sha256": "e449bab9926801d8571a59bfdeebfb7ef958f64aa3a9e0b7c808369ec7b123e4"
+    },
+    {
+      "id": "x01",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/automation/scheduler",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/automation/scheduler",
+      "characters": 4061,
+      "content_sha256": "7464b6dde87c21d43b1f3554486ea81a4f2c346dd9a1f8377d8eafdff7ab3573"
+    },
+    {
+      "id": "x02",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/automation/webhook-trigger",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/automation/webhook-trigger",
+      "characters": 4379,
+      "content_sha256": "2b1c42b69078ae6b552388f47b6a39f81162385d95708808561cd881b7264c87"
+    },
+    {
+      "id": "x03",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/manageragent/studio",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/manageragent/studio",
+      "characters": 5830,
+      "content_sha256": "06af7d98e40465cc1cd8e07c5e37c03dc4e9e416e7b21f54979675d88ea73477"
+    },
+    {
+      "id": "x04",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/connect/skills",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/connect/skills",
+      "characters": 3153,
+      "content_sha256": "0e97fd0c22e4ad495cff7e51a7197d32a135d0fa1d4a3d79810334fe32647214"
+    },
+    {
+      "id": "x05",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/agent%20features/global%20context",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/agent%20features/global%20context",
+      "characters": 3771,
+      "content_sha256": "15f84f0364f62679bd7764e1b73733f2ea90ce900d6c04c09d5e9af409226b49"
+    },
+    {
+      "id": "x06",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/responsible-safe-ai/Responsible",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/responsible-safe-ai/Responsible",
+      "characters": 10147,
+      "content_sha256": "997ab5c3176fd900112d64ae8e0a4e5bc4092c2122020e1fed23967ebf773560"
+    },
+    {
+      "id": "x07",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/agent%20eval/agentsimulation",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/agent%20eval/agentsimulation",
+      "characters": 3510,
+      "content_sha256": "9e0d9b0990c00fb42414d7a5495faa0d51ed8d08af36ee75fdef83b45a543eef"
+    },
+    {
+      "id": "x08",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/agent%20eval/improvement-engine",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/agent%20eval/improvement-engine",
+      "characters": 10760,
+      "content_sha256": "5fa69f3e4b754f82aab2ea25bf583fb90b4662ec4614fc8efd30db243d15f323"
+    },
+    {
+      "id": "x09",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/agent%20eval/tracing",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/agent%20eval/tracing",
+      "characters": 3946,
+      "content_sha256": "e9f72b219c4b98efb546b6853b90dde5f6edc29aea4a396c9ba753ad8ccd5d36"
+    },
+    {
+      "id": "x10",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/governance/rate-limits",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/governance/rate-limits",
+      "characters": 3827,
+      "content_sha256": "24315c640ae231b7a50df84faecd4d964aea2aeeaee873fa66817b90ae8deb78"
+    },
+    {
+      "id": "x11",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/control-plane/version-control",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/control-plane/version-control",
+      "characters": 2941,
+      "content_sha256": "d9571a9a2c7e898d2a36565bf41a857931456c7f298c61317e82696f846cebb7"
+    },
+    {
+      "id": "x12",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/orchestration/blueprints",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/orchestration/blueprints",
+      "characters": 3826,
+      "content_sha256": "5568c2c8ffe0467660dc81ee990fd7213b7b40da451d1fbf36f997a1b9c7aa8f"
+    },
+    {
+      "id": "x14",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/superflow/overview",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/superflow/overview",
+      "characters": 10115,
+      "content_sha256": "88e0a8bdbafd09deffa688c3ec9805cdfd72efb40870f386303e9741a9b03a00"
+    },
+    {
+      "id": "x15",
+      "url": "https://docs.lyzr.ai/enterprise/agent-studio/superflow/reliability",
+      "final_url": "https://docs.lyzr.ai/enterprise/agent-studio/superflow/reliability",
+      "characters": 11091,
+      "content_sha256": "2d868ebc42a6fe7f310e278a92065f4342301012ba48d8794e5fbe742fce1bb6"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Lyzr-Cognis/cognis/main/cognis/config.py",
+      "characters": 6344,
+      "path": "Lyzr-Cognis--cognis--cognis--config.py",
+      "content_sha256": "d80db00902e6a199a82a1220ec1aa5720b8deeecd8bd01c06c9430ca48f2a7c0"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Lyzr-Cognis/cognis/main/cognis/embeddings/gemini.py",
+      "characters": 2650,
+      "path": "Lyzr-Cognis--cognis--cognis--embeddings--gemini.py",
+      "content_sha256": "b2a66fc25d7aa1fe2438683b60b52a93900d83e536f704259627bcb5d584d688"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Lyzr-Cognis/cognis/main/cognis/extraction/extractor.py",
+      "characters": 16157,
+      "path": "Lyzr-Cognis--cognis--cognis--extraction--extractor.py",
+      "content_sha256": "8b437d5b064b14e253b39e45ea585a9ec5d7ee20f67d73a5a9412ac43d2aeeee"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/open-gitagent/gitagent/main/src/learning/reinforcement.ts",
+      "characters": 3928,
+      "path": "open-gitagent--gitagent--src--learning--reinforcement.ts",
+      "content_sha256": "56904a89b28fd551e56dd9ffdb8839766d4b39048130dd124ba7ed893fe9dd50"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/open-gitagent/gitagent/main/src/sandbox.ts",
+      "characters": 2551,
+      "path": "open-gitagent--gitagent--src--sandbox.ts",
+      "content_sha256": "cc078ac90b03401b81a8d4ca17be91003f05eb5f87a7e0eead56ac4dfa18c149"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/open-gitagent/gitagent-protocol/main/spec/SPECIFICATION.md",
+      "characters": 36226,
+      "path": "open-gitagent--gitagent-protocol--spec--SPECIFICATION.md",
+      "content_sha256": "20ab6c13ea1df189ff821b2c498c879530f93ef4df1a0a34d7d169e00d058602"
+    }
+  ],
+  "repositories": [
+    {
+      "repo": "Lyzr-Cognis/cognis",
+      "branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "spdx_id": "MIT",
+        "url": "https://api.github.com/licenses/mit",
+        "node_id": "MDc6TGljZW5zZTEz"
+      },
+      "archived": false,
+      "README.md": {
+        "url": "https://raw.githubusercontent.com/Lyzr-Cognis/cognis/main/README.md",
+        "characters": 13439
+      },
+      "LICENSE": {
+        "url": "https://raw.githubusercontent.com/Lyzr-Cognis/cognis/main/LICENSE",
+        "characters": 1063
+      },
+      "pyproject.toml": {
+        "url": "https://raw.githubusercontent.com/Lyzr-Cognis/cognis/main/pyproject.toml",
+        "characters": 1233
+      },
+      "package.json": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "observed_tree_sha": "c9046d501c797b1301aa5816eafad58b9d5ca630"
+    },
+    {
+      "repo": "open-gitagent/gitagent-protocol",
+      "branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "spdx_id": "MIT",
+        "url": "https://api.github.com/licenses/mit",
+        "node_id": "MDc6TGljZW5zZTEz"
+      },
+      "archived": false,
+      "README.md": {
+        "url": "https://raw.githubusercontent.com/open-gitagent/gitagent-protocol/main/README.md",
+        "characters": 17703
+      },
+      "LICENSE": {
+        "url": "https://raw.githubusercontent.com/open-gitagent/gitagent-protocol/main/LICENSE",
+        "characters": 1081
+      },
+      "pyproject.toml": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "package.json": {
+        "url": "https://raw.githubusercontent.com/open-gitagent/gitagent-protocol/main/package.json",
+        "characters": 1603
+      },
+      "observed_tree_sha": "d7a8e2edb54b942d6b4635cdd8b919ebd23e5da5"
+    },
+    {
+      "repo": "open-gitagent/gitagent",
+      "branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "spdx_id": "MIT",
+        "url": "https://api.github.com/licenses/mit",
+        "node_id": "MDc6TGljZW5zZTEz"
+      },
+      "archived": false,
+      "README.md": {
+        "url": "https://raw.githubusercontent.com/open-gitagent/gitagent/main/README.md",
+        "characters": 29335
+      },
+      "LICENSE": {
+        "url": "https://raw.githubusercontent.com/open-gitagent/gitagent/main/LICENSE",
+        "characters": 1078
+      },
+      "pyproject.toml": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "package.json": {
+        "url": "https://raw.githubusercontent.com/open-gitagent/gitagent/main/package.json",
+        "characters": 2103
+      },
+      "observed_tree_sha": "ed595846b684276e364aa65da38e414109ef8cfb"
+    }
+  ]
+}
