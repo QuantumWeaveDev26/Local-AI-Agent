@@ -16,7 +16,9 @@ def test_cli_initialization_and_dynamic_agent_creation(tmp_path):
         result=cli(tmp_path,'init')
         assert result.returncode==0,result.stderr
     result=cli(tmp_path,'agents','list')
-    assert len(json.loads(result.stdout))==4
+    agents = json.loads(result.stdout)
+    assert len(agents)==5
+    assert any(a['id']=='assistant' for a in agents)
     config=tmp_path/'agent.json'
     config.write_text(json.dumps({'id':'seo','name':'SEO','description':'SEO audit','instructions':'Audit','model_id':'local'}))
     result=cli(tmp_path,'agents','add',str(config))
