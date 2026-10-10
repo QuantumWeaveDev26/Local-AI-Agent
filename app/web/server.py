@@ -164,13 +164,14 @@ def create_server(store, registry, port=8765):
                 if len(parts) == 4 and parts[:2] == ['api', 'sessions'] and parts[3] == 'tasks':
                     data = self.body(['key', 'prompt'], ['agent_id', 'attachments'])
                     agent_id = data.get('agent_id')
-                    if agent_id is not None:
-                        if not isinstance(agent_id, str) or agent_id == 'manager':
-                            raise ValueError('choose a specialist or automatic routing')
-                        AgentFactory(registry).load(agent_id)
-                    else:
-                        AgentFactory(registry).load('manager')
-                    self.reply(202, store.submit(parts[2], data['key'], data['prompt'], agent_id, data.get('attachments', [])))
+                    def validate_new_submission():
+                        if agent_id is not None:
+                            if not isinstance(agent_id, str) or agent_id == 'manager':
+                                raise ValueError('choose a specialist or automatic routing')
+                            AgentFactory(registry).load(agent_id)
+                        else:
+                            AgentFactory(registry).load('manager')
+                    self.reply(202, store.submit(parts[2], data['key'], data['prompt'], agent_id, data.get('attachments', []), validate=validate_new_submission))
                     return
                 if len(parts) == 4 and parts[:2] == ['api', 'tasks'] and parts[3] == 'cancel':
                     self.body()

@@ -38,11 +38,11 @@ history(session_id), task(task_id), workspace(project_id), cancel(task_id).
 JobWorker(store,registry,llm) exposes run_next(), start(), close().
 TaskService.run gains optional task_id/history/cancelled arguments.
 
-- [ ] Write failing persistence, scope, idempotency, history, restart and cancellation
+- [x] Write failing persistence, scope, idempotency, history, restart and cancellation
   tests. Assert real DB states, files and received inference context.
-- [ ] Run .venv/bin/python -m pytest tests/test_sessions.py -q; expect missing API.
-- [ ] Implement storage, additive schema, contextual runtime and queue recovery.
-- [ ] Run entire pytest suite; expect all tests green; commit deliverable.
+- [x] Run .venv/bin/python -m pytest tests/test_sessions.py -q; expect missing API.
+- [x] Implement storage, additive schema, contextual runtime and queue recovery.
+- [x] Run entire pytest suite; expect all tests green; commit deliverable.
 
 ### Task 2: Local HTTP interface
 
@@ -52,12 +52,12 @@ modify app/main.py. Consumes SessionStore and JobWorker from Task 1.
 **Interfaces:** create_server(store, registry, port=8765) returns HTTPServer with
 token; serve --port --open-browser launches worker and loopback service.
 
-- [ ] Write failing live HTTP API and Host/Origin/token guard tests; assert project
+- [x] Write failing live HTTP API and Host/Origin/token guard tests; assert project
   upload/download stays scoped, byte limits and collision errors, refresh returns
   existing job, static allowlist rejects unknown paths.
-- [ ] Run tests/test_web.py; expect missing server.
-- [ ] Implement API with strict JSON/body limits, static allowlist, CSP and auth.
-- [ ] Run entire pytest suite; expect green; commit deliverable.
+- [x] Run tests/test_web.py; expect missing server.
+- [x] Implement API with strict JSON/body limits, static allowlist, CSP and auth.
+- [x] Run entire pytest suite; expect green; commit deliverable.
 
 ### Task 3: Browser and release evidence
 
@@ -65,13 +65,13 @@ token; serve --port --open-browser launches worker and loopback service.
 pyproject.toml, docs/progress.md, deployment/roadmap docs; add validation report.
 Consumes the authenticated HTTP API; no alternative agent execution path.
 
-- [ ] Browser scenario first: create project/session, send, refresh, see status and
+- [x] Browser scenario first: create project/session, send, refresh, see status and
   answer, continue, select file and cancel; expect missing UI initially.
-- [ ] Implement accessible responsive client, stable request keys on retry and
+- [x] Implement accessible responsive client, stable request keys on retry and
   escaped textual events/results, package the static assets.
-- [ ] Run pytest, actual browser scenario, build/package asset check and a real
+- [x] Run pytest, actual browser scenario, build/package asset check and a real
   Ollama HTTP task; expect saved result visible after service restart.
-- [ ] Independent final review, one regression-tested fix pass; record evidence,
+- [x] Independent final review, one regression-tested fix pass; record evidence,
   commit and publish source following prior user authorization.
 
 Self-review: every spec contract maps to the owning storage/API/browser task.

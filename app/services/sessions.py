@@ -1,4 +1,5 @@
 """Project-scoped conversations and durable web submissions, using the shared DB."""
+import hashlib
 import json
 import uuid
 from pathlib import Path
@@ -28,11 +29,20 @@ class SessionStore:
                     sequence INTEGER PRIMARY KEY AUTOINCREMENT,
                     task_id TEXT UNIQUE NOT NULL REFERENCES tasks(id),
                     session_id TEXT NOT NULL REFERENCES sessions(id), request_key TEXT NOT NULL,
-                    payload TEXT NOT NULL, cancel_requested INTEGER NOT NULL DEFAULT 0,
+                    payload TEXT NOT NULL, payload_digest TEXT, cancel_requested INTEGER NOT NULL DEFAULT 0,
                     UNIQUE(session_id, request_key));
                 CREATE INDEX IF NOT EXISTS idx_sessions_project ON sessions(project_id);
                 CREATE INDEX IF NOT EXISTS idx_web_jobs_session ON web_jobs(session_id, sequence);
             ''')
+            columns = {row['name'] for row in c.execute('PRAGMA table_info(web_jobs)')}
+            if 'payload_digest' not in columns:
+                c.execute('ALTER TABLE web_jobs ADD COLUMN payload_digest TEXT')
+            # Older workspace builds stored redacted keys/content only. Preserve jobs
+            # and compare their retained input conservatively; never recover secrets.
+            for row in c.execute('SELECT sequence,request_key,payload FROM web_jobs WHERE payload_digest IS NULL').fetchall():
+                digest = hashlib.sha256(row['payload'].encode('utf-8')).hexdigest()
+                key_digest = hashlib.sha256(row['request_key'].encode('utf-8')).hexdigest()
+                c.execute('UPDATE web_jobs SET request_key=?,payload_digest=? WHERE sequence=?', (key_digest, digest, row['sequence']))
 
     def projects(self):
         with self.db.connect() as c:
@@ -75,23 +85,29 @@ class SessionStore:
             c.execute('INSERT INTO sessions VALUES(?,?,?,?)', (session_id, project_id, label(title), now()))
         return self.session(session_id)
 
-    def submit(self, session_id, key, prompt, agent_id=None, attachments=None):
+    def submit(self, session_id, key, prompt, agent_id=None, attachments=None, *, validate=None):
         session = self.session(session_id)
-        key = label(key, 128)
+        label(key, 128)
+        key = hashlib.sha256(key.strip().encode('utf-8')).hexdigest()
+        raw_prompt, raw_agent_id = prompt, agent_id
         prompt = label(prompt, 20_000)
         if agent_id is not None:
             agent_id = label(agent_id, 64)
         if not isinstance(attachments, list) or len(attachments) > 8 or any(not isinstance(p, str) for p in attachments):
             raise ValueError('attachments must be a list of at most eight paths')
+        original = json.dumps({'prompt': raw_prompt, 'agent_id': raw_agent_id, 'attachments': attachments}, sort_keys=True)
+        digest = hashlib.sha256(original.encode('utf-8')).hexdigest()
         payload = json.dumps(redact_data({'prompt': prompt, 'agent_id': agent_id, 'attachments': attachments}), sort_keys=True)
         with self.db.connect() as c:
             c.execute('BEGIN IMMEDIATE')
-            previous = c.execute('SELECT task_id,payload FROM web_jobs WHERE session_id=? AND request_key=?', (session_id, key)).fetchone()
+            previous = c.execute('SELECT task_id,payload_digest FROM web_jobs WHERE session_id=? AND request_key=?', (session_id, key)).fetchone()
             if previous:
-                if previous['payload'] != payload:
+                if previous['payload_digest'] != digest:
                     raise ValueError('request key already used with different input')
                 task_id = previous['task_id']
             else:
+                if validate:
+                    validate()
                 workspace = self.workspace(session['project_id'])
                 for path in attachments:
                     target = workspace.path(path)
@@ -104,13 +120,13 @@ class SessionStore:
                     raise ValueError('queue is full; wait for existing tasks')
                 task_id = uuid.uuid4().hex
                 c.execute('INSERT INTO tasks(id,user_request,status,created_at) VALUES(?,?,?,?)', (task_id, prompt, 'queued', now()))
-                c.execute('INSERT INTO web_jobs(task_id,session_id,request_key,payload) VALUES(?,?,?,?)', (task_id, session_id, key, payload))
+                c.execute('INSERT INTO web_jobs(task_id,session_id,request_key,payload,payload_digest) VALUES(?,?,?,?,?)', (task_id, session_id, key, payload, digest))
         return self.task(task_id)
 
     def history(self, session_id):
         self.session(session_id)
         with self.db.connect() as c:
-            rows = c.execute('''SELECT t.*,j.cancel_requested FROM web_jobs j JOIN tasks t ON t.id=j.task_id
+            rows = c.execute('''SELECT t.*,j.cancel_requested,j.request_key AS request_key_digest FROM web_jobs j JOIN tasks t ON t.id=j.task_id
                 WHERE j.session_id=? ORDER BY j.sequence DESC LIMIT 1000''', (session_id,)).fetchall()
         return [dict(r) for r in reversed(rows)]
 

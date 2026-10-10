@@ -1,4 +1,4 @@
-"""Optional real-browser/live-model check. Install Playwright separately to run.
+"""Optional Linux real-browser/live-model check. Install Playwright separately to run.
 
 Usage: python tests/browser_workspace.py --base-url http://127.0.0.1:8765
 Creates a clearly named validation project and three small real inference jobs.

@@ -16,7 +16,7 @@ of general agent reasoning/code quality or guaranteed model fit.
 
 ## New milestone: cloud/Linux evidence
 
-- Automated suite: 75 tests passed, including real SQLite persistence, concurrent
+- Automated suite: 77 tests passed, including real SQLite persistence, concurrent
   idempotent submissions, scoped context/files, interrupted-job recovery,
   cancellation, live HTTP authority checks, upload/download and malformed inputs.
 - An existing workspace test-runner defect reproduced with a same-size edit and
@@ -30,6 +30,22 @@ of general agent reasoning/code quality or guaranteed model fit.
   `/workspace/runtime/browser-tools`. They are not product dependencies.
 - JavaScript syntax check passed. Wheel build succeeded and included all three
   static assets. No new product dependency or model download was required.
+- A real service stop/restart preserved the three browser tasks and qwen3:1.7b
+  returned READY when asked to recall the preceding answer after restart.
+- Independent review found four important defects: rejected submissions locked
+  editing; stale project responses mixed session controls; registry changes blocked
+  accepted-key retries; redaction collapsed distinct payloads. Each reproduction
+  failed first, then passed after the fix. An additional lost-response browser
+  reproduction now reconciles the accepted key from persisted history without
+  submitting another task. Chromium exercised all three recovery scenarios.
+
+Deduplication stores SHA-256 identities of validated original payloads and opaque
+request keys while retaining only redacted payload content. This avoids storing
+credentials in queue content merely to compare requests. For databases from an
+earlier workspace build that retained only redacted input, migration preserves
+jobs and hashes the retained input; an original input that included redacted secrets
+cannot be reconstructed and may conservatively reject a retry. Inspect existing
+history before submitting again. Normal generated browser keys are unaffected.
 
 The browser check uses an isolated validation data/workspace directory under
 `/workspace/runtime/ui-validation`. Generated screenshots and databases are not

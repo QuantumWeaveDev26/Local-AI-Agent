@@ -48,6 +48,16 @@ def test_duplicate_concurrent_submission_is_one_task(setup):
         submit(store, session, prompt='different request')
 
 
+def test_distinct_secret_inputs_still_conflict_without_persisting_secrets(setup):
+    store, _, _, session = setup
+    first = submit(store, session, prompt='Use Bearer abcdefghijklmnop')
+    with pytest.raises(ValueError, match='different'):
+        submit(store, session, prompt='Use Bearer differentsecret')
+    assert 'abcdefghijklmnop' not in json.dumps(store.task(first['id']))
+    with store.db.connect() as c:
+        assert 'abcdefghijklmnop' not in c.execute('SELECT payload FROM web_jobs').fetchone()[0]
+
+
 def test_context_survives_restart_and_is_project_scoped(setup):
     store, registry, project, session = setup
     first = submit(store, session)

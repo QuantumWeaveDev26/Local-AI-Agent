@@ -24,3 +24,35 @@ Research: explored public Lyzr product/docs and three repositories; wrote source
 
 2026-10-10 hardware/portability steering: personal RTX 3050 6 GB laptop is now first target; office Dell access is unavailable and does not block development. Original handoff reports 16 GB RAM and nearly full SSD; fresh local audit remains necessary. Updated current setup/roadmap and added transfer contract/runbook distinguishing source, SQLite backup, private workspace, credentials, models and host dependencies. Full feature roadmap preserved; new desktop/session/transfer automation remains proposed, with no physical Windows execution claim. Persisted requested Git identity in AGENTS.md.
 Portability documentation verification: relative links resolve, Git whitespace checks passed, and the SQLite backup API preserved complete agent/model/tool configurations in a temporary Linux database round trip. Windows host-to-host transfer remains unverified.
+
+2026-10-10 Windows host setup: user-provided output confirms initialization at
+D:\Projects\Local-AI-Agent, Python3.12.10/Ollama0.35.1/qwen3:1.7b, 56 passing tests,
+2 Windows filesystem skips and completed inference smoke. Actual GPU allocation,
+latency and quality benchmark remain pending. No cloud-to-Windows access claimed.
+
+Persistent assistant workspace delivered on a feature branch: shared runtime with
+bounded session history, scoped projects/files, durable single-worker queue,
+cooperative cancellation and interrupted-job protection; guarded loopback HTTP
+and browser workspace. Initial tests RED, task suites GREEN (67, then75). Real
+Chromium/Ollama scenario passed, as did stop/restart with READY follow-up recall.
+Wheel includes the three browser assets. No new product dependency/model download.
+
+Independent review identified four important findings; reproductions RED then fixes
+GREEN: rejected composer, stale project/session controls, disabled-agent duplicate
+retry and redacted-payload identity collision. Added lost-reply reconciliation
+checked in Chromium. Final suite77 passing; no deferred minor findings.
+
+Rulings: user autonomous coding authorization takes precedence over skill approval
+gates; existing checkout/feature branch follows AGENTS.md; unavailable skill helper
+references use a manual ledger. Added general Assistant without overwriting configs.
+Shutdown waits for the in-flight inference call. Fixed an existing stale-bytecode
+test runner with a fresh per-run cache. Costs: editable scope choices, less automated
+bookkeeping, one extra optional agent, timeout-bounded shutdown latency and cold
+imports for explicit workspace tests. Earlier redacted-only request identities are
+migrated conservatively; their original secrets cannot be reconstructed.
+
+Hermes steering: user suggested Hermes Agent. Inspected official source/docs at
+dce1e9b37581dd62e480a9064dc04a709c2940d3, recorded comparison and proposed isolated
+prototype before independently building later memory/skills/scheduler/messaging.
+No Hermes installation, integration, migration or performance claim made. Upstream
+installer targets Python3.14; preserve the user's working3.12 environment.

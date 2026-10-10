@@ -50,6 +50,21 @@ def test_live_api_submit_refresh_and_cancel(web):
     assert client.get('/api/agents').json()[0]['id'] == 'assistant'
 
 
+def test_accepted_submission_retries_even_after_agent_disabled(web):
+    client, store, _ = web
+    _, session = create_conversation(client)
+    url = f"/api/sessions/{session['id']}/tasks"
+    body = {'key': 'accepted-key', 'prompt': 'Hello', 'agent_id': 'assistant', 'attachments': []}
+    task = client.post(url, json=body).json()
+    Registry(store.db).set_enabled('agents', 'assistant', False)
+    reply = client.post(url, json=body)
+    assert reply.status_code == 202, reply.text
+    assert reply.json()['id'] == task['id']
+    history = client.get(f"/api/sessions/{session['id']}").json()['tasks']
+    import hashlib
+    assert history[0]['request_key_digest'] == hashlib.sha256(b'accepted-key').hexdigest()
+
+
 @pytest.mark.parametrize('headers', [
     {'Host': 'evil.example'},
     {'Origin': 'https://evil.example'},

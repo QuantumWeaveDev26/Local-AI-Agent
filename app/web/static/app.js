@@ -1,13 +1,17 @@
 'use strict';
 const $ = id => document.getElementById(id);
-const state = {token: '', projects: [], project: null, session: null, sessions: [], selected: new Set(), inspected: null, fingerprint: '', fileFingerprint: '', submitting: false};
+const state = {token: '', projects: [], project: null, session: null, sessions: [], selected: new Set(), inspected: null, fingerprint: '', fileFingerprint: '', submitting: false, navigating: false};
 let saved;
 try { saved = JSON.parse(localStorage.getItem('local-agent-workspace') || '{}'); } catch { saved = {}; }
 saved.pending = saved.pending || {};
 function persist() { localStorage.setItem('local-agent-workspace', JSON.stringify(saved)); }
 function element(tag, text, className) { const node = document.createElement(tag); if (text !== undefined) node.textContent = text; if (className) node.className = className; return node; }
 function error(message) { $('error').textContent = message; $('error').hidden = false; }
-function act(fn) { return (...args) => Promise.resolve().then(() => fn(...args)).catch(e => error(e.message)); }
+function act(fn) { return (...args) => { if (args[0]?.type === 'submit') args[0].preventDefault(); return Promise.resolve().then(() => fn(...args)).catch(e => error(e.message)); }; }
+async function keyDigest(key) {
+  const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(key.trim()));
+  return [...new Uint8Array(bytes)].map(value => value.toString(16).padStart(2, '0')).join('');
+}
 async function api(path, body, retry = true) {
   const headers = {'X-Workspace-Token': state.token};
   if (body !== undefined) headers['Content-Type'] = 'application/json';
@@ -17,18 +21,18 @@ async function api(path, body, retry = true) {
     state.token = (await api('/api/bootstrap', undefined, false)).token;
     return api(path, body, false);
   }
-  if (!response.ok) throw new Error(data.error || `Request failed (${response.status})`);
+  if (!response.ok) { const failure = new Error(data.error || `Request failed (${response.status})`); failure.status = response.status; throw failure; }
   return data;
 }
 function selection() { $('attachments-label').textContent = state.selected.size ? `${state.selected.size} file(s) attached` : 'No attachments selected'; }
 function composer() {
   const pending = saved.pending[state.session];
-  $('message').disabled = !state.session || !!pending || state.submitting;
-  $('send').disabled = !state.session || state.submitting;
+  $('message').disabled = !state.session || !!pending || state.submitting || state.navigating;
+  $('send').disabled = !state.session || state.submitting || state.navigating;
   $('send').textContent = pending ? 'Retry submission' : 'Send';
   if (pending) $('message').value = pending.prompt;
-  $('new-session').disabled = !state.project;
-  $('upload').disabled = !state.project;
+  $('new-session').disabled = !state.project || state.navigating;
+  $('upload').disabled = !state.project || state.navigating;
 }
 function navigation() {
   $('projects').replaceChildren();
@@ -44,12 +48,19 @@ function navigation() {
 }
 async function chooseProject(id) {
   state.project = id; state.session = null; state.selected.clear(); state.inspected = null;
-  state.sessions = await api(`/api/projects/${id}/sessions`);
+  state.navigating = true; state.sessions = [];
+  navigation(); composer(); selection(); $('files').replaceChildren();
+  $('conversation').replaceChildren(element('p', 'Loading conversations…', 'footnote'));
+  $('activity').replaceChildren();
+  $('project-title').textContent = state.projects.find(p => p.id === id).name;
+  const sessions = await api(`/api/projects/${id}/sessions`);
   if (state.project !== id) return;
-  saved.project = id; $('project-title').textContent = state.projects.find(p => p.id === id).name;
+  state.sessions = sessions; state.navigating = false;
+  saved.project = id;
   await chooseSession(state.sessions.some(s => s.id === saved.session) ? saved.session : state.sessions[0]?.id || null);
 }
 async function chooseSession(id) {
+  if (id !== null && !state.sessions.some(session => session.id === id)) throw new Error('Conversation does not belong to the selected project');
   state.session = id; state.inspected = null; state.fingerprint = ''; state.fileFingerprint = '';
   saved.session = id; persist(); $('message').value = ''; $('activity').replaceChildren(element('p', 'Inspect a task to see its agent, model and tool receipts.', 'footnote'));
   $('session-title').textContent = state.sessions.find(s => s.id === id)?.title || 'Create a conversation to begin.';
@@ -107,7 +118,7 @@ function renderFiles(files) {
   for (const file of files) {
     const row = element('div', undefined, 'file'), label = element('label'), check = element('input');
     check.type = 'checkbox'; check.checked = state.selected.has(file.path); check.setAttribute('aria-label', `Attach ${file.path}`);
-    check.onchange = () => { check.checked ? state.selected.add(file.path) : state.selected.delete(file.path); selection(); };
+    check.onchange = () => { if (check.checked && state.selected.size >= 8) { check.checked = false; error('Attach at most eight files to one message.'); return; } check.checked ? state.selected.add(file.path) : state.selected.delete(file.path); selection(); };
     label.append(check, document.createTextNode(file.path));
     const download = element('button', 'Download');
     const project = state.project;
@@ -127,8 +138,11 @@ async function refresh() {
   // Recover an accepted submission whose HTTP reply was lost, without resending it.
   if (saved.pending[session]) {
     const pending = saved.pending[session];
-    // Retrying uses the persisted key; matching prompts alone would be ambiguous.
-    if (pending.accepted) { delete saved.pending[session]; persist(); composer(); }
+    const digest = await keyDigest(pending.key);
+    if (session !== state.session || project !== state.project) return;
+    if (data.tasks.some(task => task.request_key_digest === digest)) {
+      delete saved.pending[session]; persist(); $('message').value = ''; composer(); $('error').hidden = true;
+    }
   }
   if (state.inspected) await activity(state.inspected);
   $('connection').textContent = 'Connected';
@@ -155,6 +169,11 @@ $('composer').onsubmit = act(async event => {
   try {
     await api(`/api/sessions/${session}/tasks`, pending); delete saved.pending[session]; persist();
     if (state.session === session) { $('message').value = ''; state.selected.clear(); state.fileFingerprint = ''; selection(); await refresh(); }
+  } catch (failure) {
+    // Explicit validation/authority rejection means no new task was accepted.
+    // An uncertain network/500 outcome retains the original key for safe recovery.
+    if ([400, 403].includes(failure.status)) { delete saved.pending[session]; persist(); }
+    throw failure;
   } finally { state.submitting = false; composer(); }
 });
 $('upload').onchange = act(async () => {
