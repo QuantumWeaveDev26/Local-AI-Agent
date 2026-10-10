@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Local Agent Workspace</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="brand"><span class="brand-mark">Q</span><div><strong>Local Agent Workspace</strong><small>Your conversations. Your machine.</small></div><span id="connection" role="status">Connecting…</span></header>
+  <div id="error" role="alert" hidden></div>
+  <div class="layout">
+    <aside class="navigation" aria-label="Projects and conversations">
+      <div class="section-label">PROJECTS</div>
+      <button id="new-project" class="primary">New project</button>
+      <nav id="projects" aria-label="Projects"></nav>
+      <div class="section-label">CONVERSATIONS</div>
+      <button id="new-session" disabled>New conversation</button>
+      <nav id="sessions" aria-label="Conversations"></nav>
+      <p class="footnote">One task at a time. Close this tab and your tasks keep running while the service is open.</p>
+    </aside>
+    <main>
+      <div class="workspace-heading"><div><span class="section-label">WORKSPACE</span><h1 id="project-title">Make room for your next idea.</h1><p id="session-title">Create a project to start a conversation.</p></div><span class="local-badge">● Local service</span></div>
+      <div id="conversation" aria-label="Conversation" aria-live="polite"><div class="empty"><h2>Think, plan, and put it to work.</h2><p>Continue a conversation, attach documents, and ask a specialist to prepare something useful.</p><p>Every tool action leaves a receipt you can inspect.</p></div></div>
+      <form id="composer">
+        <label for="message" class="visually-hidden">Message</label>
+        <textarea id="message" rows="3" maxlength="20000" placeholder="What would you like to work on?" disabled></textarea>
+        <div class="composer-controls"><label>Agent <select id="agent"><option value="">Auto · choose a specialist</option></select></label><span id="attachments-label">No attachments selected</span><button id="send" class="primary" disabled>Send</button></div>
+        <small>Recent completed turns provide context. Use task activity to verify model answers and file actions.</small>
+      </form>
+    </main>
+    <aside class="details" aria-label="Project files and task activity">
+      <div class="section-label">PROJECT FILES</div>
+      <label class="upload">Upload document<input id="upload" aria-label="Upload document" type="file" accept=".txt,.md,.pdf,.docx" disabled></label>
+      <p class="footnote">TXT, MD, PDF or DOCX · up to 5 MB. Select files to attach them to your next message.</p>
+      <div id="files"></div>
+      <h2>Task activity</h2>
+      <div id="activity"><p class="footnote">Inspect a task to see its agent, model, messages and tool receipts.</p></div>
+      <p class="footnote">Cancellation stops subsequent actions. It waits for an active model call and does not undo completed writes.</p>
+    </aside>
+  </div>
+  <dialog id="project-dialog"><form id="project-form"><h2>New project</h2><label>Project name<input id="project-name" required maxlength="120" autocomplete="off"></label><div class="dialog-actions"><button id="close-dialog" type="button">Cancel</button><button class="primary">Create project</button></div></form></dialog>
+</body>
+</html>

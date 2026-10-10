@@ -9,6 +9,14 @@ full. These are reported details; available memory, free disk, driver and GPU
 offload must be measured again. The office Dell is unavailable and is a future
 destination, not a prerequisite.
 
+The user completed setup at `D:\Projects\Local-AI-Agent`: Windows 11 build 26300,
+Python 3.12.10, Ollama 0.35.1 and qwen3:1.7b; 56 tests passed with two expected
+Windows filesystem skips. The audit reported 15.23 GiB RAM (1.83 GiB free at that
+moment), 52.09 GiB free on C and 793.74 GiB free on D, RTX 3050 6144 MiB, NVIDIA
+driver 610.62. The setup completed its local READY smoke check. GPU offload, speed
+and output quality still require the actual benchmark. These are user-provided
+measurements, not execution by this cloud session.
+
 The cloud workspace remains available for source development and Linux testing.
 It has no access to the personal Windows machine. Running the audit/setup commands
 on that machine is the physical step needed to validate deployment there.
@@ -29,6 +37,15 @@ merely because it appears in the roadmap.
 | Models | Required model identities; weights may be separately copied using runtime-supported methods | Install/import using supported Ollama procedures and verify availability |
 | Credentials | Names of required bindings, without values in exports | Supply bindings securely on each host; no secrets committed to Git |
 | Hardware/runtime | A selected host profile | Driver, CPU/GPU offload, concurrency, memory and latency measurements |
+
+Project/conversation/job state is now included in the same SQLite database.
+Project files live under `workspace/projects/PROJECT_ID`; preserve that hierarchy
+in a transfer. Stop the workspace service before the backup, copy the consistent
+database and selected project files, then recreate the destination virtual
+environment and model runtime. Do not replay interrupted jobs without reviewing
+their receipts. Browser localStorage holds local selection/pending request keys;
+the database, rather than browser storage, owns accepted tasks and conversation
+history. An unaccepted browser draft is not part of a database transfer.
 
 Application defaults already resolve `data/` and `workspace/` relative to the
 repository rather than the caller's working directory. CLI `--data-dir` and

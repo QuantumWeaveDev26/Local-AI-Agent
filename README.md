@@ -1,14 +1,14 @@
 # Local AI Agent Platform
 
-A Python CLI for creating specialist agents from configuration. Agents share or
+A local browser workspace and Python CLI for creating specialist agents from configuration. Agents share or
 select different registered models, receive only explicitly assigned tools, and
 persist execution history in SQLite. Ollama is the default local inference engine.
 No ChatGPT Agent subscription or cloud API key is needed for local execution.
 
 The entire codebase is in the repository root, `/workspace/Local-AI-Agent` in the
 cloud. See the [folder map](docs/PROJECT_STRUCTURE.md) for source locations. On the
-personal laptop, use a dedicated checkout such as `C:\Projects\Local-AI-Agent`; this cloud
-session has not created or modified a Windows folder.
+personal laptop, the user installed it at `D:\Projects\Local-AI-Agent`; cloud
+development does not directly modify that Windows folder.
 
 ```text
 Local-AI-Agent/
@@ -90,6 +90,47 @@ ollama serve
 ```
 
 No Docker, administrator shell or GPU is required for the core CLI.
+
+## Open the local workspace
+
+For an existing Windows installation, open PowerShell in the project folder:
+
+```powershell
+Set-Location D:\Projects\Local-AI-Agent
+git pull --ff-only
+.\.venv\Scripts\python.exe main.py serve --open-browser
+```
+
+Keep this terminal and Ollama running. The browser opens on your own machine.
+On Linux use `.venv/bin/python main.py serve`. `--port 8766` selects another port.
+The service binds to loopback only; it is not a public or LAN deployment server.
+Only one workspace service can own a data directory at a time.
+
+Create a project and a conversation, select Assistant or automatic specialist
+routing, and send a message. Upload documents in Project files and select their
+checkboxes to attach them. Inspect a task for the actual selected agent/model,
+messages, model metrics and tool receipts. Download prepared artifacts from the
+project's file list. Results display as plain text to keep model-generated markup
+from executing in the browser.
+
+Projects and conversations persist in `data/platform.sqlite`. Each project's
+files live under `workspace/projects/PROJECT_ID`; they are separate from the
+existing root CLI workspace. Recent completed turns provide bounded conversation
+context (up to 12 messages/12,000 characters), not cross-session memory or document
+search. Previous file contents are not automatically reattached to later turns.
+
+Refresh reconnects to the existing jobs. A persisted request key prevents duplicate
+submission when retrying a lost reply. One worker processes the queue. The UI polls
+real persisted events; generation tokens are not streamed. Cancellation waits for
+an in-flight model call and blocks later actions; completed writes stay recorded.
+Stopping the service waits for the model call, up to the configured timeout. After
+a crash, running jobs are marked interrupted: inspect receipts before submitting
+again. Queued jobs resume. There is no automatic replay of uncertain file actions.
+
+The user's baseline Windows setup passed 56 tests with two expected filesystem
+skips. The new UI has been tested on Linux/Chromium with real Ollama inference;
+its Windows/GPU validation is a separate host check. See
+[workspace validation](docs/validation/2026-10-10-assistant-workspace.md).
 
 ## Manual installation / Linux
 
@@ -254,9 +295,10 @@ unidentified secrets cannot be reliably detected. SQLite has no encryption at re
 
 ## Scope
 
-V1 delivers the configuration-driven foundation, CLI, persistence, dynamic routing,
+The current milestone delivers the configuration-driven foundation, CLI, browser
+workspace, persistent projects/conversations, durable queue, dynamic routing,
 document workflow and constrained developer file/Git tooling. It does not include
-web UI, email/calendar/browser integrations, scheduling, unrestricted shell, OCR,
+email/calendar/web-browsing integrations, scheduling, unrestricted shell, OCR,
 vector database, automated hiring decisions, agent self-creation, or multi-agent
 collaboration. Provider/factory/tool interfaces leave room to add these deliberately.
 
@@ -265,6 +307,7 @@ collaboration. Provider/factory/tool interfaces leave room to add these delibera
 - [Published environment review](docs/validation/2026-10-10-published-environment-review.md)
 - [Lyzr product and architecture research](docs/research/lyzr/2026-10-10-analysis.md)
 - [Evolving platform roadmap](docs/roadmap/2026-10-10-evolving-platform.md)
+- [Hermes runtime evaluation](docs/research/hermes/2026-10-10-evaluation.md)
 
 The roadmap records proposed capabilities; the validation documents record what
 has actually been tested. New ideas can extend and reprioritize the roadmap.

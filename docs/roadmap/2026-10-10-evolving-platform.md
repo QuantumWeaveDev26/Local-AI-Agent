@@ -61,8 +61,10 @@ flowchart TD
     F --> P
 ```
 
-The diagram shows the proposed architecture. Only registry, specialist execution,
-local providers, scoped local tools and task-event persistence exist today.
+The diagram shows the broader proposed architecture. Registry, specialist execution,
+local providers, scoped tools, task-event persistence and the first project/session
+browser workspace now exist. Durable workflows, lasting memory, retrieval,
+connectors and the evaluation loop remain future capabilities.
 
 Suggested interfaces are conceptual boundaries, not final module signatures:
 
@@ -104,6 +106,20 @@ roadmap; hardware profiles control models/context/concurrency rather than silent
 disabling features.
 
 ## Milestone 1 — persistent assistant workspace
+
+Implemented first delivery: local browser/API, persistent projects/conversations,
+bounded completed-turn context, scoped uploads/artifacts, single durable queue,
+request-key deduplication, refresh/reconnect, audit view and cooperative cancellation.
+Linux/Chromium with real Ollama passed; Windows UI validation remains pending.
+Interrupted jobs are marked for review, not automatically replayed. Progress is
+polled from persisted events; generation tokens are not streamed. See
+[validation](../validation/2026-10-10-assistant-workspace.md).
+
+New steering: the user suggested Hermes Agent. Before building later memory,
+skills, scheduling and messaging subsystems, evaluate a pinned Hermes runtime
+as a foundation through an isolated compatibility prototype. See the
+[Hermes assessment](../research/hermes/2026-10-10-evaluation.md). No runtime swap
+has been made and no existing private state is migrated implicitly.
 
 **User experience:** open a local application, continue a conversation, attach files,
 see a task's status and output, and return to the same project later.
