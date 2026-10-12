@@ -1,4 +1,5 @@
 """Project-scoped conversations and durable web submissions, using the shared DB."""
+from contextlib import closing
 import hashlib
 import json
 import uuid
@@ -18,7 +19,7 @@ class SessionStore:
     def __init__(self, db, workspace):
         self.db = db
         self.root = Workspace(workspace)
-        with db.connect() as c:
+        with closing(db.connect()) as c, c:
             c.executescript('''
                 CREATE TABLE IF NOT EXISTS projects (
                     id TEXT PRIMARY KEY, name TEXT NOT NULL, created_at TEXT NOT NULL);
@@ -45,11 +46,11 @@ class SessionStore:
                 c.execute('UPDATE web_jobs SET request_key=?,payload_digest=? WHERE sequence=?', (key_digest, digest, row['sequence']))
 
     def projects(self):
-        with self.db.connect() as c:
+        with closing(self.db.connect()) as c, c:
             return [dict(r) for r in c.execute('SELECT * FROM projects ORDER BY created_at')]
 
     def project(self, project_id):
-        with self.db.connect() as c:
+        with closing(self.db.connect()) as c, c:
             row = c.execute('SELECT * FROM projects WHERE id=?', (project_id,)).fetchone()
         if not row:
             raise ValueError('unknown project')
@@ -58,7 +59,7 @@ class SessionStore:
     def create_project(self, name):
         name = label(name)
         project_id = uuid.uuid4().hex
-        with self.db.connect() as c:
+        with closing(self.db.connect()) as c, c:
             c.execute('INSERT INTO projects VALUES(?,?,?)', (project_id, name, now()))
         return self.project(project_id)
 
@@ -68,11 +69,11 @@ class SessionStore:
 
     def sessions(self, project_id):
         self.project(project_id)
-        with self.db.connect() as c:
+        with closing(self.db.connect()) as c, c:
             return [dict(r) for r in c.execute('SELECT * FROM sessions WHERE project_id=? ORDER BY created_at', (project_id,))]
 
     def session(self, session_id):
-        with self.db.connect() as c:
+        with closing(self.db.connect()) as c, c:
             row = c.execute('SELECT * FROM sessions WHERE id=?', (session_id,)).fetchone()
         if not row:
             raise ValueError('unknown session')
@@ -81,7 +82,7 @@ class SessionStore:
     def create_session(self, project_id, title):
         self.project(project_id)
         session_id = uuid.uuid4().hex
-        with self.db.connect() as c:
+        with closing(self.db.connect()) as c, c:
             c.execute('INSERT INTO sessions VALUES(?,?,?,?)', (session_id, project_id, label(title), now()))
         return self.session(session_id)
 
@@ -98,7 +99,7 @@ class SessionStore:
         original = json.dumps({'prompt': raw_prompt, 'agent_id': raw_agent_id, 'attachments': attachments}, sort_keys=True)
         digest = hashlib.sha256(original.encode('utf-8')).hexdigest()
         payload = json.dumps(redact_data({'prompt': prompt, 'agent_id': agent_id, 'attachments': attachments}), sort_keys=True)
-        with self.db.connect() as c:
+        with closing(self.db.connect()) as c, c:
             c.execute('BEGIN IMMEDIATE')
             previous = c.execute('SELECT task_id,payload_digest FROM web_jobs WHERE session_id=? AND request_key=?', (session_id, key)).fetchone()
             if previous:
@@ -125,14 +126,14 @@ class SessionStore:
 
     def history(self, session_id):
         self.session(session_id)
-        with self.db.connect() as c:
+        with closing(self.db.connect()) as c, c:
             rows = c.execute('''SELECT t.*,j.cancel_requested,j.request_key AS request_key_digest FROM web_jobs j JOIN tasks t ON t.id=j.task_id
                 WHERE j.session_id=? ORDER BY j.sequence DESC LIMIT 1000''', (session_id,)).fetchall()
         return [dict(r) for r in reversed(rows)]
 
     def context(self, session_id):
         # Only completed turns, assembled when dequeued rather than when submitted.
-        with self.db.connect() as c:
+        with closing(self.db.connect()) as c, c:
             rows = c.execute('''SELECT t.user_request,t.result FROM web_jobs j JOIN tasks t ON t.id=j.task_id
                 WHERE j.session_id=? AND t.status='completed' ORDER BY j.sequence DESC LIMIT 6''', (session_id,)).fetchall()
         messages, remaining = [], 12_000
@@ -145,7 +146,7 @@ class SessionStore:
         return list(reversed(messages))
 
     def job(self, task_id):
-        with self.db.connect() as c:
+        with closing(self.db.connect()) as c, c:
             row = c.execute('SELECT * FROM web_jobs WHERE task_id=?', (task_id,)).fetchone()
         if not row:
             raise ValueError('unknown workspace task')
@@ -159,7 +160,7 @@ class SessionStore:
 
     def cancel(self, task_id):
         self.job(task_id)
-        with self.db.connect() as c:
+        with closing(self.db.connect()) as c, c:
             c.execute('BEGIN IMMEDIATE')
             status = c.execute('SELECT status FROM tasks WHERE id=?', (task_id,)).fetchone()[0]
             if status in ('queued', 'running'):

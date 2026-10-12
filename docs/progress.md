@@ -188,3 +188,15 @@ and measured Hermes report. No force push or private runtime fixture publication
 The disposable Hermes probe tag was removed and original Qwen3 weights preserved.
 Environment configuration already contains installation and restart/readiness
 instructions; no configuration change or new snapshot publication is claimed.
+
+2026-10-13 Windows setup regression: user clone at C:\Projects\Local-AI-Agent
+installed dependencies and initialized state, then reported 138 passed, 1 skipped,
+1 failed (test_cli_backup_restore_round_trip): WinError32 deleting the temporary
+schema database. SQLite transaction context managers do not close connections;
+Database and SessionStore constructors left handles awaiting garbage collection.
+All application Database connection scopes now explicitly close after the existing
+transaction commit/rollback. Two regression tests retain real handles and verify
+they are closed, including schema construction, registry errors and durable jobs.
+Both tests failed before the fix. Full Linux suite: 142 passed in 16.30 seconds
+with permission for local HTTP fixtures; initial sandbox run had 127 passed and
+15 socket-permission errors. Actual Windows rerun and inference remain pending.

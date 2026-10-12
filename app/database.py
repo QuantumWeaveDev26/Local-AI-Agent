@@ -1,4 +1,5 @@
 """SQLite persistence with parameter binding and centralized secret redaction."""
+from contextlib import closing
 import json
 import os
 import re
@@ -47,7 +48,7 @@ class Database:
     def __init__(self, path):
         self.path = Path(path).resolve()
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        with self.connect() as c:
+        with closing(self.connect()) as c, c:
             c.execute('PRAGMA journal_mode=WAL')
             for table in ('models', 'agents', 'tools'):
                 c.execute(f'CREATE TABLE IF NOT EXISTS {table} (id TEXT PRIMARY KEY, data TEXT NOT NULL, created_at TEXT NOT NULL, updated_at TEXT NOT NULL)')
@@ -69,30 +70,30 @@ class Database:
 
     def create_task(self, request):
         task_id = uuid.uuid4().hex
-        with self.connect() as c:
+        with closing(self.connect()) as c, c:
             c.execute('INSERT INTO tasks(id,user_request,status,created_at) VALUES(?,?,?,?)',
                       (task_id, redact(request), 'running', now()))
         return task_id
 
     def assign(self, task_id, agent_id):
-        with self.connect() as c:
+        with closing(self.connect()) as c, c:
             c.execute('UPDATE tasks SET assigned_agent_id=? WHERE id=?', (agent_id, task_id))
 
     def event(self, table, task_id, data):
         if table not in EVENT_TABLES:
             raise ValueError('unknown event table')
         safe_data = json.dumps(redact_data(data), ensure_ascii=False, default=str)
-        with self.connect() as c:
+        with closing(self.connect()) as c, c:
             c.execute(f'INSERT INTO {table}(task_id,data,created_at) VALUES(?,?,?)', (task_id, safe_data, now()))
 
     def finish_task(self, task_id, status, result=None, error=None):
-        with self.connect() as c:
+        with closing(self.connect()) as c, c:
             c.execute('UPDATE tasks SET status=?,result=?,error=?,completed_at=? WHERE id=?',
                       (status, redact(result) if result is not None else None,
                        redact(error) if error is not None else None, now(), task_id))
 
     def task(self, task_id):
-        with self.connect() as c:
+        with closing(self.connect()) as c, c:
             row = c.execute('SELECT * FROM tasks WHERE id=?', (task_id,)).fetchone()
             if row is None:
                 raise ValueError(f'unknown task: {task_id}')

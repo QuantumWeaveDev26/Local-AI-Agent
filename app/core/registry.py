@@ -1,4 +1,5 @@
 """Dynamic configuration storage. No specialist-specific behavior lives here."""
+from contextlib import closing
 import json
 import sqlite3
 from app.database import now
@@ -13,7 +14,7 @@ class Registry:
 
     def _add(self, table, record):
         record = TYPES[table].model_validate(record.model_dump())
-        with self.db.connect() as c:
+        with closing(self.db.connect()) as c, c:
             try:
                 c.execute(f'INSERT INTO {table}(id,data,created_at,updated_at) VALUES(?,?,?,?)',
                           (record.id, record.model_dump_json(), now(), now()))
@@ -22,14 +23,14 @@ class Registry:
         return record
 
     def _get(self, table, record_id):
-        with self.db.connect() as c:
+        with closing(self.db.connect()) as c, c:
             row = c.execute(f'SELECT data FROM {table} WHERE id=?', (record_id,)).fetchone()
         if row is None:
             raise ValueError(f'unknown {table} record: {record_id}')
         return TYPES[table].model_validate_json(row['data'])
 
     def _list(self, table, enabled_only=False):
-        with self.db.connect() as c:
+        with closing(self.db.connect()) as c, c:
             records = [TYPES[table].model_validate_json(r['data']) for r in c.execute(f'SELECT data FROM {table} ORDER BY id')]
         return [r for r in records if not enabled_only or r.enabled]
 
@@ -72,7 +73,7 @@ class Registry:
             raise ValueError('unknown registry')
         record = self._get(table, record_id)
         record.enabled = enabled
-        with self.db.connect() as c:
+        with closing(self.db.connect()) as c, c:
             c.execute(f'UPDATE {table} SET data=?,updated_at=? WHERE id=?', (record.model_dump_json(), now(), record_id))
 
     def update_agent(self, agent_id, **changes):
@@ -88,6 +89,6 @@ class Registry:
             self.get_agent(candidate.parent_id)
         for tool_id in candidate.tools:
             self.get_tool(tool_id)
-        with self.db.connect() as c:
+        with closing(self.db.connect()) as c, c:
             c.execute('UPDATE agents SET data=?,updated_at=? WHERE id=?', (candidate.model_dump_json(),now(),agent_id))
         return candidate

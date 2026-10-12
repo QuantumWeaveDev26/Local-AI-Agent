@@ -1,4 +1,5 @@
 """Single durable workspace queue; uncertain actions are never replayed."""
+from contextlib import closing
 import threading
 
 from app.database import now
@@ -12,13 +13,13 @@ class JobWorker:
         self.stop = threading.Event()
         self.thread = None
         # The service process holds its lock before constructing this worker.
-        with store.db.connect() as c:
+        with closing(store.db.connect()) as c, c:
             c.execute('''UPDATE tasks SET status='interrupted',completed_at=?,
                 error='Service stopped during execution; review receipts before resubmitting'
                 WHERE status='running' AND id IN (SELECT task_id FROM web_jobs)''', (now(),))
 
     def run_next(self):
-        with self.store.db.connect() as c:
+        with closing(self.store.db.connect()) as c, c:
             c.execute('BEGIN IMMEDIATE')
             row = c.execute('''SELECT j.task_id FROM web_jobs j JOIN tasks t ON t.id=j.task_id
                 WHERE t.status='queued' ORDER BY j.sequence LIMIT 1''').fetchone()
