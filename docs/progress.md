@@ -92,3 +92,20 @@ catalog hashes against cached official bodies. Full suite79passed in13.81seconds
 Windows and live provider/account behavior remain untested. Publication uses the
 requested Naveen-145119 author/committer identity; no credentials/private data
 or retrieved raw documentation bodies enter Git.
+
+2026-10-12 disk inspection: screenshot shows C:36.4GBfree of475GB,92%used and no
+D:drive visible. Prepared a standalone Python standard-library metadata audit
+without requiring the missing project drive. No deletion, contents reading, model
+downloads, shell cleanup or paid service use. Local filesystem regressions RED
+(missing script) ->5passing; helper ranks root/nested directories, development
+dependencies/caches and files, bounds rankings, skips links/cloud placeholders,
+deduplicates hardlinks and refuses to overwrite a report. Logical sizes and
+permission/reparse gaps are explicitly distinguished from allocated disk usage.
+Actual Windows scan/output remains the physical user-host step; no large-item
+diagnosis or cleanup recommendation for a specific file is claimed yet.
+
+Disk-audit review: Windows DirEntry.stat zeros hardlink identity fields. Reproduction
+with simulated Windows metadata RED (double-counted link) ->os.stat identity fallback
+GREEN. Minor deferred: internal root-directory/extension/hardlink accumulators are
+not bounded by --top; rankings are bounded and memory caveat is documented. No
+actual Windows metadata scan or user deletion performed.
