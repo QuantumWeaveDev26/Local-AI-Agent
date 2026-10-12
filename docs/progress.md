@@ -181,3 +181,10 @@ portable-state milestone. First GitHub push approval was aborted; no successful
 push is claimed. Independent runtime/dependency downloads and local-only probes
 received execution approval and continued. Preserve local commits until publication
 is completed; do not reset or force-push around an unresolved approval.
+
+2026-10-12 publication completed: approved normal Git push advanced GitHub main
+from 67f41d8 to 54b9095, containing the reviewed portable backup/restore milestone
+and measured Hermes report. No force push or private runtime fixture publication.
+The disposable Hermes probe tag was removed and original Qwen3 weights preserved.
+Environment configuration already contains installation and restart/readiness
+instructions; no configuration change or new snapshot publication is claimed.
