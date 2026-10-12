@@ -459,3 +459,22 @@ def test_restore_preserves_parent_created_by_another_process(source, tmp_path, m
         api().restore_bundle(output, destination, offline=True)
     assert destination.parent.is_dir()
     assert not destination.exists()
+
+
+@pytest.mark.parametrize('name', ['COM¹.txt', 'LPT².txt', 'NUL .txt', 'CON .txt', 'CONIN$', 'CONOUT$'])
+def test_portable_paths_reject_all_windows_device_forms(name):
+    fmt = importlib.import_module('app.services.backup_format')
+    with pytest.raises(ValueError, match='portable'):
+        fmt.portable_path('documents/' + name)
+
+
+@pytest.mark.parametrize('name', ['COM¹.txt', 'LPT².txt', 'NUL .txt', 'CON .txt', 'CONIN$', 'CONOUT$'])
+def test_device_member_cannot_be_inspected_or_restored(source, tmp_path, name):
+    output = bundle(source, tmp_path)
+    rewrite(output, lambda entries, manifest: entries.update({'workspace/' + name: b'not a device'}))
+    with pytest.raises(ValueError, match='portable'):
+        api().inspect_bundle(output)
+    destination = tmp_path / 'device-restore'
+    with pytest.raises(ValueError, match='portable'):
+        api().restore_bundle(output, destination, offline=True)
+    assert not destination.exists()

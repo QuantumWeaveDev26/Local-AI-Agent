@@ -75,7 +75,7 @@ docs/deployment/portable-windows.md; create deployment backup guide and validati
   state creation by inspection or invalid restore; run targeted tests RED.
 - [x] Add CLI dispatch and document private offline transfer with Windows commands.
 - [x] Run full pytest, actual create/inspect/restore and restored HTTP service smoke.
-- [ ] Fresh whole-branch review; regression-test important fixes; publish source.
+- [x] Fresh whole-branch review; regression-test important fixes; publish source.
 
 Self-review: the three tasks cover the format/snapshot, restore, and user entry
 points. Host GPU and actual Windows transfer are intentionally distinct evidence.

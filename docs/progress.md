@@ -140,3 +140,25 @@ create/inspect/restore and two restored-service start/restart HTTP cycles preser
 fixture project/history/artifact bytes and never replayed a queued job. See
 docs/validation/2026-10-12-portable-backups.md. Physical Windows transfer/GPU checks
 remain separate. Bundles/private-fixture databases stay outside public Git.
+
+Portable backup final review: one Important Windows reserved-device-name defect,
+12 regressions RED→GREEN, final suite 140 passed in16.35s after approved loopback
+socket access. No other Critical/Important findings. Reviewer ran49 backup/CLI
+checks. Initial restricted-sandbox run had125passes/15socket-setup errors; resolved
+by approved execution, without test suppression or product workarounds.
+
+Rulings for this milestone:
+- Honor explicit autonomous implementation/publication rather than skill approval
+  handoffs; cost if wrong: milestone priorities may need revision.
+- Use the existing checkout/feature branch under AGENTS.md; cost if wrong: branch
+  isolation may be less convenient than a worktree, without modifying other files.
+- Keep a manual ledger because provider helper resources were unavailable; cost if
+  wrong: bookkeeping requires manual verification rather than helper automation.
+- Physical Windows recovery/GPU execution were outside reviewer evidence; keep
+  them unverified. Cost if wrong: host-specific issues await actual host checks.
+- Provider availability/billing were not exercised; restore disables non-Ollama
+  provider records and makes no requests. Cost if wrong: explicit later activation
+  without host/billing review could fail or incur charges.
+- Adversarial concurrent path replacement is outside the offline contract, not an
+  OS sandbox guarantee. Cost if wrong: external mutation could invalidate scope or
+  snapshot stability. No such behavior is claimed protected by this delivery.

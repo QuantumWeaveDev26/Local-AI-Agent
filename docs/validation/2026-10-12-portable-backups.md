@@ -17,6 +17,18 @@ credentials/runtime/link omission, source mutation, schema/triggers with recompu
 hashes, payload corruption/limits, existing destinations, failed-copy cleanup,
 queued/running import interruption and disabled remote models.
 
+Fresh independent review found one Important Windows portability issue: Win32
+device aliases with superscript digits, spaces before extensions, and console
+device names passed the initial regex. Twelve parameterized path/crafted-archive
+regressions failed first, then passed after the cross-platform reserved-name fix.
+Final full suite: **140 passed in 16.35 seconds**. No other Critical/Important
+findings were reported. The reviewer independently ran 49 backup/CLI checks.
+
+The sandbox switched to restricted networking during final verification; the
+initial full run had 125 passes and 15 loopback-socket permission setup errors.
+Rerunning through the approved local-socket execution path passed all 140 tests.
+No assertions were disabled and no network-dependent fixture was skipped.
+
 ## Actual CLI and service checks
 
 Created a fictional project/conversation with one completed answer, one queued

@@ -24,7 +24,9 @@ EXCLUDED_NAMES = {
     'node_modules', '.cache', '__pycache__', '.ollama', 'models', 'credentials',
     'id_rsa', 'id_ed25519', '.pytest_cache',
 }
-RESERVED = re.compile(r'^(con|prn|aux|nul|com[0-9]|lpt[0-9])(?:\.|$)', re.I)
+# Win32 also reserves console devices, superscript port digits and spaces before
+# an extension. Apply the rule on every host, without deprecated pathlib APIs.
+RESERVED = re.compile(r'^(con|prn|aux|nul|conin\$|conout\$|com[0-9¹²³]|lpt[0-9¹²³]) *(?:\.|$)', re.I)
 
 
 def excluded(name):
