@@ -57,12 +57,12 @@ validated counts/models/omissions summary from owned staging.
 **Interfaces:** Consumes staged validation from Task 1. Produces
 `restore_bundle(bundle: Path, destination: Path, offline: bool = False) -> dict`.
 
-- [ ] Add failing round-trip tests for different destination, context/files,
+- [x] Add failing round-trip tests for different destination, context/files,
   interrupted queue, disabled remote model, existing destination, parent links,
   damaged archive and failed publishing cleanup.
-- [ ] Run the targeted restore tests; expect missing restore API.
-- [ ] Implement validate-first staging, exclusive destination and restore receipt.
-- [ ] Run full pytest; expect all tests passing; commit.
+- [x] Run the targeted restore tests; expect missing restore API.
+- [x] Implement validate-first staging, exclusive destination and restore receipt.
+- [x] Run full pytest; expect all tests passing; commit.
 
 ### Task 3: CLI, documentation and release evidence
 

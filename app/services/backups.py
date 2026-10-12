@@ -2,6 +2,7 @@
 import hashlib
 import json
 import os
+import shutil
 import sqlite3
 import stat
 import tempfile
@@ -131,3 +132,72 @@ def create_bundle(data_dir, workspace, output, offline=False):
 def inspect_bundle(bundle):
     with tempfile.TemporaryDirectory(prefix='local-agent-inspect-') as directory:
         return fmt.unpack_validated(Path(bundle), Path(directory))
+
+
+def _prepare_restored_database(path):
+    interrupted, disabled = [], []
+    timestamp = now()
+    message = 'Restored pending work; review receipts before explicitly resubmitting on this host'
+    with closing(sqlite3.connect(path)) as connection:
+        connection.execute('PRAGMA trusted_schema=OFF')
+        connection.execute('PRAGMA foreign_keys=ON')
+        connection.execute('PRAGMA journal_mode=DELETE')
+        with connection:
+            interrupted = [row[0] for row in connection.execute(
+                "SELECT id FROM tasks WHERE status IN ('queued','running') ORDER BY id")]
+            for task_id in interrupted:
+                connection.execute('UPDATE tasks SET status=?,completed_at=?,error=? WHERE id=?',
+                                   ('interrupted', timestamp, message, task_id))
+                connection.execute('INSERT INTO errors(task_id,data,created_at) VALUES(?,?,?)',
+                                   (task_id, json.dumps({'operation': 'restore', 'error': message}), timestamp))
+            for model_id, raw in connection.execute('SELECT id,data FROM models ORDER BY id').fetchall():
+                model = json.loads(raw)
+                if model.get('provider', 'ollama') != 'ollama' and model.get('enabled', True):
+                    model['enabled'] = False
+                    connection.execute('UPDATE models SET data=?,updated_at=? WHERE id=?',
+                                       (json.dumps(model), timestamp, model_id))
+                    disabled.append(model_id)
+    return interrupted, disabled
+
+
+def restore_bundle(bundle, destination, offline=False):
+    if not offline:
+        raise ValueError('restore requires --offline and a new destination directory')
+    destination = fmt.checked_path(destination)
+    if destination.exists():
+        raise FileExistsError('restore destination already exists; choose a new directory')
+    created, new_parents, made_parents = False, [], []
+    try:
+        with tempfile.TemporaryDirectory(prefix='local-agent-restore-') as directory:
+            staged = Path(directory)
+            report = fmt.unpack_validated(Path(bundle), staged)
+            interrupted, disabled = _prepare_restored_database(staged / 'data/platform.sqlite')
+            database = fmt.validate_database(staged / 'data/platform.sqlite')
+            report = {**report, **database, 'status': 'restored', 'destination': str(destination),
+                      'interrupted_tasks': interrupted, 'disabled_models': disabled,
+                      'host_review': 'Install required models and review endpoints, credentials and knowledge paths; no jobs were started'}
+            (staged / 'workspace').mkdir(exist_ok=True)
+            (staged / 'data/restore-receipt.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
+            fmt.checked_path(destination)
+            for parent in destination.parents:
+                if parent.exists():
+                    break
+                new_parents.append(parent)
+            for parent in reversed(new_parents):
+                parent.mkdir(mode=0o700)
+                made_parents.append(parent)
+            # Exclusive reservation avoids replacing even an empty concurrent destination.
+            destination.mkdir(mode=0o700)
+            created = True
+            shutil.copytree(staged / 'data', destination / 'data')
+            shutil.copytree(staged / 'workspace', destination / 'workspace')
+            return report
+    except BaseException:
+        if created:
+            shutil.rmtree(destination)
+        for parent in reversed(made_parents):
+            try:
+                parent.rmdir()
+            except OSError:
+                pass
+        raise
