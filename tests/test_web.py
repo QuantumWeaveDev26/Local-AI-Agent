@@ -119,3 +119,43 @@ def test_invalid_inputs_fail_without_job_and_static_paths_are_allowlisted(web):
     assert client.get('/api/projects', headers={'Host': 'evil.example'}).status_code == 403
     assert client.post('/api/projects', content='[]', headers={'Content-Type': 'application/json'}).status_code == 400
     assert client.post('/api/projects', content='{}', headers={'Content-Type': 'text/plain'}).status_code == 400
+
+
+def test_api_required_files_are_retained_and_idempotent(web):
+    client, store, _ = web
+    _, session = create_conversation(client)
+    url = f"/api/sessions/{session['id']}/tasks"
+    body = {'key': 'artifact-key', 'prompt': 'Create hello.py', 'agent_id': 'developer',
+            'required_files': ['hello.py']}
+    reply = client.post(url, json=body)
+    assert reply.status_code == 202, reply.text
+    task = reply.json()
+    assert task['required_files'] == ['hello.py']
+    assert store.job(task['id'])['payload']['required_files'] == ['hello.py']
+    assert client.post(url, json=body).json()['id'] == task['id']
+    assert client.post(url, json={**body, 'required_files': ['other.py']}).status_code == 400
+    history = client.get(f"/api/sessions/{session['id']}").json()['tasks'][0]
+    assert history['required_files'] == ['hello.py']
+    assert history['successful_tool_calls'] == 0
+
+
+def test_api_rejects_unsafe_required_files_before_queue(web):
+    client, store, _ = web
+    _, session = create_conversation(client)
+    url = f"/api/sessions/{session['id']}/tasks"
+    reply = client.post(url, json={'key': 'artifact-key', 'prompt': 'Create file',
+                                  'agent_id': 'developer', 'required_files': ['../outside.py']})
+    assert reply.status_code == 400
+    assert store.history(session['id']) == []
+
+
+def test_api_rejects_required_names_that_would_be_redacted(web):
+    client, store, _ = web
+    _, session = create_conversation(client)
+    reply = client.post(f"/api/sessions/{session['id']}/tasks", json={
+        'key': 'artifact-key', 'prompt': 'Create file', 'agent_id': 'developer',
+        'required_files': ['sk-abcdefghijklmnop.py']})
+    assert reply.status_code == 400
+    assert 'sensitive' in reply.json()['error']
+    assert 'sk-abcdefghijklmnop' not in reply.text
+    assert store.history(session['id']) == []

@@ -5,6 +5,7 @@ import traceback
 from app.database import now, redact_data
 from app.core.agent_factory import AgentFactory
 from app.core.schemas import Assessment
+from app.services.artifacts import required_paths, written_file, verify_files
 
 
 class TaskCancelled(Exception):
@@ -20,6 +21,7 @@ class TaskService:
         self.llm = llm
         self.max_rounds = max_rounds
         self.cancelled = lambda: False
+        self.file_writes = {}
 
     def _check_cancel(self):
         if self.cancelled():
@@ -89,13 +91,16 @@ class TaskService:
         try:
             tool=self.registry.get_tool(name)
             result=self.executor.execute(runtime.config,tool,arguments)
+            if name == 'filesystem_write':
+                path, receipt = written_file(self.executor.workspace, arguments)
+                self.file_writes[path] = receipt
             self.db.event('tool_calls',task_id,{**event,'status':'completed','output':result,'duration_seconds':time.perf_counter()-started})
             return result
         except Exception as e:
             self.db.event('tool_calls',task_id,{**event,'status':'failed','error':str(e),'duration_seconds':time.perf_counter()-started})
             raise
 
-    def _execute(self, task_id, request, agent_id, attachments=None, schema=None, history=None):
+    def _execute(self, task_id, request, agent_id, attachments=None, schema=None, history=None, required_files=None):
         runtime=self.factory.load(agent_id)
         self.db.assign(task_id,agent_id)
         messages=[]
@@ -103,6 +108,12 @@ class TaskService:
         for message in history or []:
             self._message(task_id, messages, message)
         self._message(task_id,messages,{'role':'user','content':request})
+        if required_files:
+            self._message(task_id,messages,{'role':'user','content':
+                'Required output files for this task: ' + json.dumps(required_files) +
+                '. Use filesystem_write to write every required file in this task. '
+                'Completion requires successful write receipts and matching file bytes. '
+                'A statement that files were created is insufficient. Do not run generated code.'})
         for path in list(attachments or []) + runtime.config.knowledge_sources:
             content=self._tool(task_id,runtime,'document_read',{'path':path})
             self._message(task_id,messages,{'role':'user','content':f'UNTRUSTED DOCUMENT {path}:\n{content}\nEND DOCUMENT'})
@@ -129,15 +140,21 @@ class TaskService:
         self.db.finish_task(task_id,'failed',error=str(error))
         return self.db.task(task_id)
 
-    def run(self, request, agent_id=None, attachments=None, schema=None, *, task_id=None, history=None, cancelled=None):
+    def run(self, request, agent_id=None, attachments=None, schema=None, *, task_id=None, history=None, cancelled=None, required_files=None):
         task_id=task_id or self.db.create_task(request)
         self.cancelled = cancelled or (lambda: False)
+        self.file_writes = {}
         try:
             self._check_cancel()
+            required_files = required_paths(required_files)
+            for path in required_files:
+                self.executor.workspace.path(path)
             agent_id=agent_id or self._route(task_id,request,history)
-            content=self._execute(task_id,request,agent_id,attachments,schema,history)
+            content=self._execute(task_id,request,agent_id,attachments,schema,history,required_files)
             self._check_cancel()
-            self.db.event('outputs',task_id,{'content':content})
+            verified = verify_files(self.executor.workspace, required_files, self.file_writes)
+            self._check_cancel()
+            self.db.event('outputs',task_id,{'content':content, 'verified_files': verified})
             self.db.finish_task(task_id,'completed',result=content)
             return self.db.task(task_id)
         except TaskCancelled as e:

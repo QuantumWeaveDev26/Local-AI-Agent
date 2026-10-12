@@ -33,6 +33,7 @@ class JobWorker:
             payload = job['payload']
             service = TaskService(self.registry, ToolExecutor(self.store.workspace(session['project_id'])), self.llm)
             service.run(payload['prompt'], agent_id=payload['agent_id'], attachments=payload['attachments'],
+                        required_files=payload.get('required_files', []),
                         task_id=task_id, history=self.store.context(session['id']),
                         cancelled=lambda: self.stop.is_set() or bool(self.store.job(task_id)['cancel_requested']))
         except Exception as error:

@@ -7,6 +7,7 @@ from pathlib import Path
 
 from app.database import now, redact, redact_data
 from app.tools.workspace import Workspace
+from app.services.artifacts import required_paths
 
 
 def label(value, maximum=120):
@@ -86,7 +87,7 @@ class SessionStore:
             c.execute('INSERT INTO sessions VALUES(?,?,?,?)', (session_id, project_id, label(title), now()))
         return self.session(session_id)
 
-    def submit(self, session_id, key, prompt, agent_id=None, attachments=None, *, validate=None):
+    def submit(self, session_id, key, prompt, agent_id=None, attachments=None, *, validate=None, required_files=None):
         session = self.session(session_id)
         label(key, 128)
         key = hashlib.sha256(key.strip().encode('utf-8')).hexdigest()
@@ -96,9 +97,16 @@ class SessionStore:
             agent_id = label(agent_id, 64)
         if not isinstance(attachments, list) or len(attachments) > 8 or any(not isinstance(p, str) for p in attachments):
             raise ValueError('attachments must be a list of at most eight paths')
-        original = json.dumps({'prompt': raw_prompt, 'agent_id': raw_agent_id, 'attachments': attachments}, sort_keys=True)
+        required_files = required_paths(required_files)
+        original_data = {'prompt': raw_prompt, 'agent_id': raw_agent_id, 'attachments': attachments}
+        payload_data = {'prompt': prompt, 'agent_id': agent_id, 'attachments': attachments}
+        # Empty/omitted requirements retain the legacy digest for accepted retries.
+        if required_files:
+            original_data['required_files'] = required_files
+            payload_data['required_files'] = required_files
+        original = json.dumps(original_data, sort_keys=True)
         digest = hashlib.sha256(original.encode('utf-8')).hexdigest()
-        payload = json.dumps(redact_data({'prompt': prompt, 'agent_id': agent_id, 'attachments': attachments}), sort_keys=True)
+        payload = json.dumps(redact_data(payload_data), sort_keys=True)
         with closing(self.db.connect()) as c, c:
             c.execute('BEGIN IMMEDIATE')
             previous = c.execute('SELECT task_id,payload_digest FROM web_jobs WHERE session_id=? AND request_key=?', (session_id, key)).fetchone()
@@ -110,6 +118,8 @@ class SessionStore:
                 if validate:
                     validate()
                 workspace = self.workspace(session['project_id'])
+                for path in required_files:
+                    workspace.path(path)
                 for path in attachments:
                     target = workspace.path(path)
                     if not target.is_file():
@@ -127,9 +137,17 @@ class SessionStore:
     def history(self, session_id):
         self.session(session_id)
         with closing(self.db.connect()) as c, c:
-            rows = c.execute('''SELECT t.*,j.cancel_requested,j.request_key AS request_key_digest FROM web_jobs j JOIN tasks t ON t.id=j.task_id
+            rows = c.execute('''SELECT t.*,j.cancel_requested,j.request_key AS request_key_digest,j.payload,
+                (SELECT count(*) FROM tool_calls tc WHERE tc.task_id=t.id
+                 AND json_extract(tc.data,'$.status')='completed') AS successful_tool_calls
+                FROM web_jobs j JOIN tasks t ON t.id=j.task_id
                 WHERE j.session_id=? ORDER BY j.sequence DESC LIMIT 1000''', (session_id,)).fetchall()
-        return [dict(r) for r in reversed(rows)]
+        result = []
+        for row in reversed(rows):
+            item = dict(row)
+            item['required_files'] = json.loads(item.pop('payload')).get('required_files', [])
+            result.append(item)
+        return result
 
     def context(self, session_id):
         # Only completed turns, assembled when dequeued rather than when submitted.
@@ -156,7 +174,9 @@ class SessionStore:
 
     def task(self, task_id):
         job = self.job(task_id)
-        return {**self.db.task(task_id), 'session_id': job['session_id'], 'cancel_requested': bool(job['cancel_requested'])}
+        return {**self.db.task(task_id), 'session_id': job['session_id'],
+                'required_files': job['payload'].get('required_files', []),
+                'cancel_requested': bool(job['cancel_requested'])}
 
     def cancel(self, task_id):
         self.job(task_id)

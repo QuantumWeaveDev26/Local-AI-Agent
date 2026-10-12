@@ -1,5 +1,9 @@
 # Local AI Agent Platform
 
+Continuing in another Codex session? Start with the maintained
+[handoff](docs/handoff/CURRENT.md), [transfer procedure](docs/handoff/TRANSFER.md)
+and [ready-to-paste continuation prompt](docs/handoff/NEXT-CODEX-PROMPT.md).
+
 A local browser workspace and Python CLI for creating specialist agents from configuration. Agents share or
 select different registered models, receive only explicitly assigned tools, and
 persist execution history in SQLite. Ollama is the default local inference engine.
@@ -7,7 +11,7 @@ No ChatGPT Agent subscription or cloud API key is needed for local execution.
 
 The entire codebase is in the repository root, `/workspace/Local-AI-Agent` in the
 cloud. See the [folder map](docs/PROJECT_STRUCTURE.md) for source locations. On the
-personal laptop, the user installed it at `D:\Projects\Local-AI-Agent`; cloud
+personal laptop, the current checkout is `C:\Projects\Local-AI-Agent`; cloud
 development does not directly modify that Windows folder.
 
 ```text
@@ -137,6 +141,27 @@ checkboxes to attach them. Inspect a task for the actual selected agent/model,
 messages, model metrics and tool receipts. Download prepared artifacts from the
 project's file list. Results display as plain text to keep model-generated markup
 from executing in the browser.
+
+For a file-creation task, enter the expected project-relative paths in **Required
+output files**, one per line (up to eight), as well as describing the task. For
+example, require `dedupe.py` and `test_dedupe.py`. A task completes only after this
+task successfully writes every listed file and its current bytes match the latest
+write. Existing files or an AI statement that files were created are insufficient.
+Failed delivery retains partial writes and receipts for review; it does not replay
+or undo them. Without requirements, a completed task means a response completed;
+the UI separately shows whether any successful tool actions were recorded.
+
+The CLI supports the same check with repeatable `--require-file`:
+
+```powershell
+.\.venv\Scripts\python.exe main.py run 'Create dedupe.py and test_dedupe.py. Do not run code.' --agent developer --require-file dedupe.py --require-file test_dedupe.py
+```
+
+File verification checks UTF-8 bytes and records sizes/hashes. It does not execute
+code or establish code correctness; review generated files before using the
+explicit `test-workspace --trust-workspace-code` command. Verification describes
+the files at completion time, not protection against subsequent external edits.
+Names that would be changed by secret redaction are rejected rather than renamed.
 
 Projects and conversations persist in `data/platform.sqlite`. Each project's
 files live under `workspace/projects/PROJECT_ID`; they are separate from the

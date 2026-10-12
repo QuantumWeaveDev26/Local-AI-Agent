@@ -26,6 +26,9 @@
       <form id="composer">
         <label for="message" class="visually-hidden">Message</label>
         <textarea id="message" rows="3" maxlength="20000" placeholder="What would you like to work on?" disabled></textarea>
+        <label for="required-files">Required output files (optional)</label>
+        <textarea id="required-files" rows="2" maxlength="8192" placeholder="One project-relative filename per line, e.g. dedupe.py" disabled></textarea>
+        <small>Listed files must be written in this task and verified before it completes. This does not run or test their code.</small>
         <div class="composer-controls"><label>Agent <select id="agent"><option value="">Auto · choose a specialist</option></select></label><span id="attachments-label">No attachments selected</span><button id="send" class="primary" disabled>Send</button></div>
         <small>Recent completed turns provide context. Use task activity to verify model answers and file actions.</small>
       </form>

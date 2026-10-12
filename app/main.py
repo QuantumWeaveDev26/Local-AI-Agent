@@ -68,6 +68,7 @@ def parser():
             update.add_argument('--tools',nargs='*')
             update.add_argument('--permission',dest='permission_level',type=int,choices=[1,2])
     run=sub.add_parser('run'); run.add_argument('request'); run.add_argument('--agent'); run.add_argument('--attach',action='append',default=[])
+    run.add_argument('--require-file', action='append', default=[], help='Require a current-task write and verified bytes for this relative output path; repeat for multiple files')
     recruit=sub.add_parser('recruit'); recruit.add_argument('cv'); recruit.add_argument('job_description'); recruit.add_argument('--agent',default='recruitment')
     task=sub.add_parser('task'); task.add_argument('id')
     doctor=sub.add_parser('doctor'); doctor.add_argument('--model',default='local')
@@ -219,7 +220,7 @@ def main(argv=None):
                 registry.set_enabled(args.command,args.id,args.action=='enable')
                 emit({'id':args.id,'enabled':args.action=='enable'})
         elif args.command in ('run','recruit'):
-            task=service.run(args.request,agent_id=args.agent,attachments=args.attach) if args.command=='run' else service.recruit(args.cv,args.job_description,args.agent)
+            task=service.run(args.request,agent_id=args.agent,attachments=args.attach,required_files=args.require_file) if args.command=='run' else service.recruit(args.cv,args.job_description,args.agent)
             emit({'task_id':task['id'],'selected_agent':task['assigned_agent_id'],'models_used':[r['data']['model_id'] for r in task['task_runs']],'status':task['status'],'result':task['result'],'error':task['error']})
             return 0 if task['status']=='completed' else 1
         elif args.command=='task':

@@ -161,3 +161,60 @@ def test_invalid_session_and_missing_file_fail_before_queue(setup):
     with pytest.raises(FileNotFoundError):
         submit(store, session, attachments=['missing.txt'])
     assert store.history(session['id']) == []
+
+
+def test_required_files_survive_restart_and_reject_false_completion(setup):
+    store, registry, project, session = setup
+    job = store.submit(session['id'], 'files', 'Create files', 'developer', [],
+                       required_files=['dedupe.py', 'test_dedupe.py'])
+    restored = SessionStore(Database(store.db.path), store.root.root)
+    assert restored.job(job['id'])['payload']['required_files'] == ['dedupe.py', 'test_dedupe.py']
+    JobWorker(restored, registry, ScriptedLLM([Response('Both files created')])).run_next()
+    task = restored.task(job['id'])
+    assert task['status'] == 'failed'
+    assert task['required_files'] == ['dedupe.py', 'test_dedupe.py']
+    assert restored.history(session['id'])[0]['successful_tool_calls'] == 0
+    assert restored.context(session['id']) == []
+    assert restored.files(project['id']) == []
+
+
+def test_required_files_verified_by_worker_and_visible_in_history(setup):
+    store, registry, project, session = setup
+    job = store.submit(session['id'], 'files', 'Create hello.py', 'developer', [], required_files=['hello.py'])
+    call = {'id': 'write-1', 'name': 'filesystem_write',
+            'arguments': {'path': 'hello.py', 'content': 'print("hello")\n'}}
+    JobWorker(store, registry, ScriptedLLM([Response('', [call]), Response('Created')])).run_next()
+    task = store.task(job['id'])
+    assert task['status'] == 'completed'
+    assert task['outputs'][0]['data']['verified_files'][0]['path'] == 'hello.py'
+    history = store.history(session['id'])[0]
+    assert history['required_files'] == ['hello.py']
+    assert history['successful_tool_calls'] == 1
+    assert store.files(project['id'])[0]['path'] == 'hello.py'
+
+
+def test_required_file_changes_conflict_with_same_submission_key(setup):
+    store, _, _, session = setup
+    job = store.submit(session['id'], 'files', 'Create files', 'developer', [], required_files=['one.py'])
+    assert store.submit(session['id'], 'files', 'Create files', 'developer', [],
+                        required_files=['one.py'])['id'] == job['id']
+    with pytest.raises(ValueError, match='different input'):
+        store.submit(session['id'], 'files', 'Create files', 'developer', [], required_files=['two.py'])
+    old = store.submit(session['id'], 'legacy', 'Chat', 'assistant', [])
+    assert store.submit(session['id'], 'legacy', 'Chat', 'assistant', [], required_files=[])['id'] == old['id']
+
+
+@pytest.mark.parametrize('paths', [['../escape.py'], ['.env'], ['A.py', 'a.py'], 'one.py'])
+def test_invalid_required_files_never_enter_queue(setup, paths):
+    store, _, _, session = setup
+    with pytest.raises(ValueError):
+        store.submit(session['id'], 'files', 'Create files', 'developer', [], required_files=paths)
+    assert store.history(session['id']) == []
+
+
+def test_redaction_cannot_change_a_required_filename_in_the_queue(setup):
+    store, _, _, session = setup
+    with pytest.raises(ValueError, match='sensitive'):
+        store.submit(session['id'], 'files', 'Create file', 'developer', [],
+                     required_files=['sk-abcdefghijklmnop.py'])
+    assert store.history(session['id']) == []

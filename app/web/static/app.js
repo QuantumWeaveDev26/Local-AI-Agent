@@ -28,9 +28,10 @@ function selection() { $('attachments-label').textContent = state.selected.size 
 function composer() {
   const pending = saved.pending[state.session];
   $('message').disabled = !state.session || !!pending || state.submitting || state.navigating;
+  $('required-files').disabled = $('message').disabled;
   $('send').disabled = !state.session || state.submitting || state.navigating;
   $('send').textContent = pending ? 'Retry submission' : 'Send';
-  if (pending) $('message').value = pending.prompt;
+  if (pending) { $('message').value = pending.prompt; $('required-files').value = (pending.required_files || []).join('\n'); }
   $('new-session').disabled = !state.project || state.navigating;
   $('upload').disabled = !state.project || state.navigating;
 }
@@ -62,7 +63,7 @@ async function chooseProject(id) {
 async function chooseSession(id) {
   if (id !== null && !state.sessions.some(session => session.id === id)) throw new Error('Conversation does not belong to the selected project');
   state.session = id; state.inspected = null; state.fingerprint = ''; state.fileFingerprint = '';
-  saved.session = id; persist(); $('message').value = ''; $('activity').replaceChildren(element('p', 'Inspect a task to see its agent, model and tool receipts.', 'footnote'));
+  saved.session = id; persist(); $('message').value = ''; $('required-files').value = ''; $('activity').replaceChildren(element('p', 'Inspect a task to see its agent, model and tool receipts.', 'footnote'));
   $('session-title').textContent = state.sessions.find(s => s.id === id)?.title || 'Create a conversation to begin.';
   navigation(); composer(); selection(); await refresh();
 }
@@ -85,6 +86,13 @@ function renderTasks(tasks) {
       cancel.onclick = act(async () => { await api(`/api/tasks/${task.id}/cancel`, {}); await refresh(); }); meta.append(cancel);
     }
     card.append(meta);
+    if (task.required_files?.length) {
+      card.append(element('p', `Required files: ${task.required_files.join(', ')}`, 'footnote'));
+      if (task.status === 'completed') card.append(element('p', 'File delivery verified at completion · code not tested', 'footnote'));
+    }
+    if (task.status === 'completed') card.append(element('p', task.successful_tool_calls
+      ? `${task.successful_tool_calls} successful tool action(s) recorded · inspect receipts`
+      : 'Response only · no tool actions recorded', 'footnote'));
     if (task.result !== null) card.append(element('pre', task.result, 'answer'));
     if (task.error) card.append(element('p', task.error, 'task-error'));
     $('conversation').append(card);
@@ -93,9 +101,11 @@ function renderTasks(tasks) {
 async function activity(id) {
   const task = await api(`/api/tasks/${id}`);
   if (state.inspected !== id) return;
-  const pane = $('activity'); pane.replaceChildren(element('p', `${task.status} · ${task.assigned_agent_id || 'unassigned'}`, 'footnote'));
+  const pane = $('activity'); pane.replaceChildren(element('p', `Agent: ${task.assigned_agent_id || 'unassigned'} · Status: ${task.status}`, 'footnote'));
   const models = [...new Set(task.task_runs.map(run => run.data.model_id))];
   pane.append(element('p', `Models: ${models.join(', ') || 'not yet called'}`, 'footnote'), element('p', `Task ${task.id}`, 'footnote'));
+  const verified = task.outputs.flatMap(output => output.data.verified_files || []);
+  pane.append(element('p', verified.length ? `Verified file delivery: ${verified.map(file => file.path).join(', ')}. Code not tested.` : 'No file delivery verification recorded.', 'footnote'));
   const events = [];
   for (const table of ['messages', 'task_runs', 'tool_calls', 'outputs', 'errors']) {
     for (const event of task[table]) events.push({...event, table});
@@ -103,7 +113,8 @@ async function activity(id) {
   events.sort((a, b) => a.created_at.localeCompare(b.created_at) || a.id - b.id);
   for (const event of events) {
     const box = element('details', undefined, 'event');
-    box.append(element('summary', `${event.table} · ${event.data.tool_id || event.data.model_id || event.data.role || event.data.status || 'result'}`));
+    const role = event.data.role === 'assistant' ? 'AI response' : event.data.role;
+    box.append(element('summary', `${event.table} · ${event.data.tool_id || event.data.model_id || role || event.data.status || 'result'}`));
     const text = JSON.stringify(event.data, null, 2);
     box.append(element('pre', text.length > 20000 ? text.slice(0, 20000) + '\n[Display truncated; full event remains in the database]' : text)); pane.append(box);
   }
@@ -141,7 +152,7 @@ async function refresh() {
     const digest = await keyDigest(pending.key);
     if (session !== state.session || project !== state.project) return;
     if (data.tasks.some(task => task.request_key_digest === digest)) {
-      delete saved.pending[session]; persist(); $('message').value = ''; composer(); $('error').hidden = true;
+      delete saved.pending[session]; persist(); $('message').value = ''; $('required-files').value = ''; composer(); $('error').hidden = true;
     }
   }
   if (state.inspected) await activity(state.inspected);
@@ -163,12 +174,13 @@ $('new-session').onclick = act(newSession);
 $('composer').onsubmit = act(async event => {
   event.preventDefault(); const session = state.session;
   if (!session || state.submitting) return;
-  const pending = saved.pending[session] || {key: crypto.randomUUID(), prompt: $('message').value, agent_id: $('agent').value || null, attachments: [...state.selected]};
+  const pending = saved.pending[session] || {key: crypto.randomUUID(), prompt: $('message').value, agent_id: $('agent').value || null, attachments: [...state.selected], required_files: $('required-files').value.split('\n').map(path => path.trim()).filter(Boolean)};
   if (!pending.prompt.trim()) return;
+  if ((pending.required_files || []).length > 8) throw new Error('Require at most eight output files per task.');
   saved.pending[session] = pending; persist(); state.submitting = true; composer(); $('error').hidden = true;
   try {
     await api(`/api/sessions/${session}/tasks`, pending); delete saved.pending[session]; persist();
-    if (state.session === session) { $('message').value = ''; state.selected.clear(); state.fileFingerprint = ''; selection(); await refresh(); }
+    if (state.session === session) { $('message').value = ''; $('required-files').value = ''; state.selected.clear(); state.fileFingerprint = ''; selection(); await refresh(); }
   } catch (failure) {
     // Explicit validation/authority rejection means no new task was accepted.
     // An uncertain network/500 outcome retains the original key for safe recovery.

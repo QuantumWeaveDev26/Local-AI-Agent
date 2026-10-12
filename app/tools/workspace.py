@@ -68,7 +68,8 @@ class Workspace:
         target.parent.mkdir(parents=True, exist_ok=True)
         # Recheck after making parents; external processes must not mutate paths concurrently.
         target = self.path(path)
-        target.write_text(content, encoding='utf-8')
+        # Preserve the requested UTF-8 bytes on Windows too (no CRLF conversion).
+        target.write_bytes(content.encode('utf-8'))
         return f'Wrote {len(content)} characters to {path}'
 
     def _git(self, arguments):

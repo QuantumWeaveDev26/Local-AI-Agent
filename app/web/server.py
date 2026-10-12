@@ -162,7 +162,7 @@ def create_server(store, registry, port=8765):
                         self.reply(201, store.upload(parts[2], data['path'], base64.b64decode(data['content'], validate=True)))
                         return
                 if len(parts) == 4 and parts[:2] == ['api', 'sessions'] and parts[3] == 'tasks':
-                    data = self.body(['key', 'prompt'], ['agent_id', 'attachments'])
+                    data = self.body(['key', 'prompt'], ['agent_id', 'attachments', 'required_files'])
                     agent_id = data.get('agent_id')
                     def validate_new_submission():
                         if agent_id is not None:
@@ -171,7 +171,7 @@ def create_server(store, registry, port=8765):
                             AgentFactory(registry).load(agent_id)
                         else:
                             AgentFactory(registry).load('manager')
-                    self.reply(202, store.submit(parts[2], data['key'], data['prompt'], agent_id, data.get('attachments', []), validate=validate_new_submission))
+                    self.reply(202, store.submit(parts[2], data['key'], data['prompt'], agent_id, data.get('attachments', []), validate=validate_new_submission, required_files=data.get('required_files')))
                     return
                 if len(parts) == 4 and parts[:2] == ['api', 'tasks'] and parts[3] == 'cancel':
                     self.body()

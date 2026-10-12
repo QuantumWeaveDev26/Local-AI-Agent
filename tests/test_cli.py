@@ -133,3 +133,14 @@ def test_cli_backup_requires_offline_and_existing_output_is_preserved(tmp_path):
     assert result.returncode != 0
     assert 'exists' in result.stderr
     assert bundle.read_bytes() == b'An existing backup'
+
+
+def test_cli_required_files_rejects_unsafe_path_before_inference(tmp_path):
+    assert cli(tmp_path, 'init').returncode == 0
+    result = cli(tmp_path, 'run', 'Create file', '--agent', 'developer',
+                 '--require-file', '../escape.py')
+    assert result.returncode == 1
+    task = json.loads(result.stdout)
+    assert task['status'] == 'failed'
+    assert 'portable path' in task['error']
+    assert task['models_used'] == []

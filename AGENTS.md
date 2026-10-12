@@ -1,5 +1,13 @@
 # Project working instructions
 
+- Start continuation tasks with `docs/handoff/CURRENT.md`,
+  `docs/handoff/NEXT-CODEX-PROMPT.md` and `docs/handoff/TRANSFER.md`. Maintain the
+  handoff after each completed milestone and immediately before a requested
+  transfer: current branch/commit and publication status, checks and limitations,
+  unresolved issues, next task and startup commands. Preserve the evolving vision;
+  do not restart from a blank project or mistake proposed features for delivery.
+  Never put credentials, private conversations or uploaded documents in Git.
+
 - Use the existing checkout. Do not create a worktree unless the user asks.
 - Git commits must use `Naveen-145119 <naveenreddy91590@gmail.com>` for author and
   committer. Verify the repository-local identity before committing; never rewrite

@@ -200,3 +200,35 @@ they are closed, including schema construction, registry errors and durable jobs
 Both tests failed before the fix. Full Linux suite: 142 passed in 16.30 seconds
 with permission for local HTTP fixtures; initial sandbox run had 127 passed and
 15 socket-permission errors. Actual Windows rerun and inference remain pending.
+
+2026-10-13 user Windows confirmation supersedes the pending note above: setup
+passed 141 tests with one filesystem skip in 55.25 seconds, doctor and local READY
+smoke completed. Current clone C:\Projects\Local-AI-Agent; reported C free97.24GiB.
+Browser chat/recall succeeded, including recall after the requested restart sequence
+(restart itself not directly observed). hello.py task showed write/read receipts.
+Later dedupe task claimed files created but neither was found; exact raw host
+events were unavailable. Native qwen3:1.7b ran100%GPU,8Kcontext,86-90tokens/s,
+1895MiBGPU snapshot. qwen3:4b metadata FineTuneThinking:42-43tokens/s,3318MiB,
+thinkfalse did not stop thinking, coding hit1200tokens. Closing the thinking
+template in a disposable clone did not fix behavior; user removed only that clone.
+Explicit official qwen3:4b-instruct-2507-q4_K_M installed/registered as instruct4b:
+100%GPU,43-45tokens/s,3249MiB; structured/tool-call checks passed, but generated
+dedupe still failed nonconsecutive duplicates. No agent/default-model changes.
+
+2026-10-13 required-file delivery milestone: optional required_files in browser,
+queued payloads and CLI --require-file. Completion requires current-task successful
+writes plus matching live UTF-8 bytes; partial/unsupported delivery fails with
+receipts retained. No generated code execution. UI exposes response-only tool
+evidence and separates agent identity from message role. Final Linux173tests passed
+18.66seconds; six Node DOM checks passed. Independent review found filename
+redaction and canonical-casing issues; both addressed with failing regressions and
+rechecked, no further findings. Actual local1.7 job delivered both files and verified
+hashes/restart persistence. Delivered code was still incorrect and test module
+missed import; inspected, never executed. New Windows feature validation pending.
+Details: docs/validation/2026-10-13-file-delivery.md.
+
+2026-10-13 user requests maintained handoff due to limited credits. Keep current
+state, startup/transfer procedure and next-Codex prompt in docs/handoff and update
+at milestones or explicit handoff requests. Repository-source publication is
+separate from cloud snapshot publication and private-state transfer. Credentials,
+private conversations, uploaded documents and model weights must not enter Git.
