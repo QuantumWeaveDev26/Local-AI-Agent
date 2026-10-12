@@ -71,10 +71,10 @@ docs/deployment/portable-windows.md; create deployment backup guide and validati
 
 **Interfaces:** CLI create/inspect/restore calls Task 1/2 APIs before initialization.
 
-- [ ] Add failing subprocess tests for CLI round-trip, useful errors and no default
+- [x] Add failing subprocess tests for CLI round-trip, useful errors and no default
   state creation by inspection or invalid restore; run targeted tests RED.
-- [ ] Add CLI dispatch and document private offline transfer with Windows commands.
-- [ ] Run full pytest, actual create/inspect/restore and restored HTTP service smoke.
+- [x] Add CLI dispatch and document private offline transfer with Windows commands.
+- [x] Run full pytest, actual create/inspect/restore and restored HTTP service smoke.
 - [ ] Fresh whole-branch review; regression-test important fixes; publish source.
 
 Self-review: the three tasks cover the format/snapshot, restore, and user entry

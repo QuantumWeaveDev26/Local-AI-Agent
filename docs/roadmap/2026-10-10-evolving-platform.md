@@ -105,6 +105,14 @@ validation as private state and schema migrations grow. Features remain on the
 roadmap; hardware profiles control models/context/concurrency rather than silently
 disabling features.
 
+12 October delivery: private-state ZIP snapshots, integrity/schema inspection and
+exclusive fresh-directory restore are implemented. Tests cover WAL/session/file
+round trips, excluded credentials/runtime paths, interruption of imported pending
+jobs and disabled cloud models. Real Linux restored-service restart checks passed;
+Windows/GPU transfer remains unverified. See [backup guide](../deployment/private-backups.md)
+and [validation](../validation/2026-10-12-portable-backups.md). Hardware profile
+selection, encrypted/incremental exports and scheduling remain proposed.
+
 ## Milestone 1 — persistent assistant workspace
 
 Implemented first delivery: local browser/API, persistent projects/conversations,

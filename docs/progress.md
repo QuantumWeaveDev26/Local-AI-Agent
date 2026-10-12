@@ -109,3 +109,34 @@ with simulated Windows metadata RED (double-counted link) ->os.stat identity fal
 GREEN. Minor deferred: internal root-directory/extension/hardlink accumulators are
 not bounded by --top; rankings are bounded and memory caveat is documented. No
 actual Windows metadata scan or user deletion performed.
+
+2026-10-12 later user-host disk evidence: the standalone Windows scan completed
+with 1,925,693 accessible files and 392.77 GiB logical payload. The user attached
+an NTFS HDD as E:, backed up the Docker data disk and performed requested cleanup.
+Docker startup logs showed ERROR_SHARING_VIOLATION; Get-DiskImage showed the C:
+data disk attached. Targeted termination/detachment cleared startup; the user
+reported their creative-ai containers/volumes visible again. They subsequently
+explicitly chose complete Docker removal, then removed the identified recording
+and older user temporary files. Latest user-reported C: free space: 93.84 GiB.
+Preserve C:\Gov Proj and E: backups. Docker backup restoration and the original
+platform-state location are not verified; these are user-host reports, not remote
+Windows execution by the cloud agent.
+
+2026-10-12 autonomous continuation: user asked to close the laptop and continue all
+platform work without stopping. Cloud baseline 85 tests passed; no Windows remote
+access or perpetual post-task execution is implied. Selected the portable-state
+milestone because it directly protects transfers and unavailable-disk recovery.
+Spec/plan committed; user-delegated autonomous scope overrides additional skill
+approval handoffs. Inline implementation, existing checkout/feature branch and
+one final fresh-context review preserve repository instructions.
+
+Portable snapshots and validated fresh-directory restore: SQLite backup API,
+approved file bytes, bounded manifest/hashes, portable paths, schema/constraint
+checks, offline service lock and no overwrite. Credential/runtime/model files
+excluded with an omissions report. Imported queued/running tasks are interrupted
+with receipts; remote model configurations disabled. No provider requests or new
+dependencies. All 128 Linux tests passed in 16.09s before final review. Actual CLI
+create/inspect/restore and two restored-service start/restart HTTP cycles preserved
+fixture project/history/artifact bytes and never replayed a queued job. See
+docs/validation/2026-10-12-portable-backups.md. Physical Windows transfer/GPU checks
+remain separate. Bundles/private-fixture databases stay outside public Git.

@@ -30,6 +30,12 @@ conversations and project files require the original private database/workspace 
 a backup. Recreate virtual environments and check existing Ollama model storage
 before downloading weights again; preserve existing directories and private data.
 
+Later 12 October user-host update: an HDD is connected as E: (NTFS), and the user
+reports 93.84 GiB free on C: after personally removing Docker, one recording and
+older temporary files. A Docker data-disk backup is on E:; restoration is untested.
+Preserve `C:\Gov Proj` and that backup. The original platform-state location is
+still unverified. This Python/Ollama platform does not require Docker.
+
 The full platform direction remains in the evolving roadmap: persistent chat,
 projects, knowledge/research, memory, specialist coordination, resumable workflows,
 skills, connectors, schedules, evaluation and optional modalities. It will be built
@@ -65,8 +71,11 @@ they are not required by Windows application code.
 Do not copy `.venv` between systems: it contains machine-specific executables and
 paths. Model weights are separate from source; there is no need to download a
 distinct model for each configured agent. Source portability is supported by the
-current structure. Automated backup/restore, migration checks and host-profile
-selection remain proposed work, not implemented commands.
+current structure. Automated private bundles and fresh-destination restore are now
+implemented; see [the backup guide](private-backups.md). They use SQLite's backup
+API, checksums and schema validation, retain file scope, and interrupt imported
+pending work. Credential/model setup still requires host review; automatic hardware
+profile selection remains proposed.
 
 ## First installation on the current laptop
 

@@ -24,7 +24,9 @@
   enable paid plugins/managed agents/knowledge bases/storage/model units, or use
   media generation. Do not treat displayed credits, rate limits or client counters
   as a guarantee against charges. Never ask for secret API keys in chat.
-- The previously used disk is unavailable; whether the D: checkout/private state
-  is accessible is currently unknown. Check paths/free space read-only before
+- The user connected an HDD as E: and reports 93.84 GiB free on C: after manual
+  cleanup. Original D: checkout/private-state availability remains unverified.
+  Preserve C:\Gov Proj and the E: Docker backup. The user removed Docker; the core
+  Python/Ollama platform does not require it. Check paths/free space read-only before
   restoring or installing. A Git clone recovers source, not private conversations,
   files, model weights or virtual environments. Preserve any existing state.

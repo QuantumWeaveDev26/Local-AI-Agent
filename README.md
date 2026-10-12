@@ -91,6 +91,24 @@ ollama serve
 
 No Docker, administrator shell or GPU is required for the core CLI.
 
+## Back up conversations and move between computers
+
+Stop the workspace service and other writers, then create and inspect a private
+bundle containing SQLite state and approved workspace files:
+
+```powershell
+.\.venv\Scripts\python.exe main.py backup create --output E:\Backups\platform.localagent.zip --offline
+.\.venv\Scripts\python.exe main.py backup inspect E:\Backups\platform.localagent.zip
+.\.venv\Scripts\python.exe main.py backup restore E:\Backups\platform.localagent.zip --destination C:\LocalAI-State\restored --offline
+```
+
+The output parent must exist; the restore destination must not exist. Credentials,
+models and virtual environments are separate. Imported pending jobs require review
+rather than automatically running; remote-model configurations remain disabled
+until reviewed. Bundles are private, unencrypted and Git-ignored. See the
+[backup and restore guide](docs/deployment/private-backups.md) for limits, omitted
+files, host checks and how to start the restored workspace.
+
 ## Open the local workspace
 
 For an existing Windows installation, open PowerShell in the project folder:
@@ -105,6 +123,13 @@ Keep this terminal and Ollama running. The browser opens on your own machine.
 On Linux use `.venv/bin/python main.py serve`. `--port 8766` selects another port.
 The service binds to loopback only; it is not a public or LAN deployment server.
 Only one workspace service can own a data directory at a time.
+
+The D: path above is the historical installation location. The user later attached
+an HDD as E:; the original platform-state location is still unverified. Use the
+actual existing checkout or a new dedicated `C:\Projects\Local-AI-Agent` clone,
+preserving original private state. A clone does not restore chat history. The user
+reports 93.84 GiB free on C: after cleanup and removed Docker; Python/Ollama can run
+without Docker.
 
 Create a project and a conversation, select Assistant or automatic specialist
 routing, and send a message. Upload documents in Project files and select their

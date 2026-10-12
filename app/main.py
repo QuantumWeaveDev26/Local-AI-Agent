@@ -42,6 +42,17 @@ def parser():
     init.add_argument('--model',default='qwen3:1.7b')
     init.add_argument('--router-model',default='qwen3:4b')
     init.add_argument('--base-url',default='http://127.0.0.1:11434')
+    backup=sub.add_parser('backup',help='Create, inspect or restore a private offline transfer bundle')
+    actions=backup.add_subparsers(dest='backup_action',required=True)
+    create=actions.add_parser('create')
+    create.add_argument('--output',type=Path,required=True)
+    create.add_argument('--offline',action='store_true',help='Acknowledge all source services, CLI writers and editors are stopped')
+    inspect=actions.add_parser('inspect')
+    inspect.add_argument('bundle',type=Path)
+    restore=actions.add_parser('restore')
+    restore.add_argument('bundle',type=Path)
+    restore.add_argument('--destination',type=Path,required=True)
+    restore.add_argument('--offline',action='store_true',help='Restore into a new directory without starting jobs')
     for group in ('agents','models','tools'):
         g=sub.add_parser(group).add_subparsers(dest='action',required=True)
         g.add_parser('list')
@@ -150,6 +161,16 @@ def main(argv=None):
     try:
         if args.timeout <= 0:
             raise ValueError('timeout must be positive')
+        if args.command=='backup':
+            from app.services.backups import create_bundle, inspect_bundle, restore_bundle
+            if args.backup_action=='create':
+                report=create_bundle(args.data_dir,args.workspace,args.output,offline=args.offline)
+            elif args.backup_action=='inspect':
+                report=inspect_bundle(args.bundle)
+            else:
+                report=restore_bundle(args.bundle,args.destination,offline=args.offline)
+            emit(report)
+            return 0
         args.data_dir.mkdir(parents=True,exist_ok=True)
         registry=Registry(Database(args.data_dir/'platform.sqlite'))
         workspace=Workspace(args.workspace)

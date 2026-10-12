@@ -88,3 +88,48 @@ def test_cli_timeout_is_configurable(tmp_path):
     assert result.returncode==0,result.stderr
     result=cli(tmp_path,'--timeout','0','init')
     assert result.returncode!=0
+
+
+def test_cli_backup_restore_round_trip(tmp_path):
+    assert cli(tmp_path, 'init').returncode == 0
+    (tmp_path / 'workspace/evidence.txt').write_text('A transferable artifact')
+    bundle = tmp_path / 'transfer.localagent.zip'
+    created = cli(tmp_path, 'backup', 'create', '--output', str(bundle), '--offline')
+    assert created.returncode == 0, created.stderr
+    assert json.loads(created.stdout)['file_count'] == 2
+    inspected = cli(tmp_path / 'inspection-only', 'backup', 'inspect', str(bundle))
+    assert inspected.returncode == 0, inspected.stderr
+    assert not (tmp_path / 'inspection-only').exists()
+    destination = tmp_path / 'restored'
+    restored = cli(tmp_path / 'unrelated', 'backup', 'restore', str(bundle),
+                   '--destination', str(destination), '--offline')
+    assert restored.returncode == 0, restored.stderr
+    assert not (tmp_path / 'unrelated').exists()
+    assert (destination / 'workspace/evidence.txt').read_text() == 'A transferable artifact'
+    assert json.loads(cli(destination, 'agents', 'show', 'developer').stdout)['model_id'] == 'local'
+
+
+def test_cli_invalid_restore_creates_no_application_state(tmp_path):
+    invalid = tmp_path / 'invalid.localagent.zip'
+    invalid.write_bytes(b'Not an archive')
+    destination = tmp_path / 'new-parent' / 'restored'
+    result = cli(tmp_path / 'unrelated', 'backup', 'restore', str(invalid),
+                 '--destination', str(destination), '--offline')
+    assert result.returncode != 0
+    assert 'zip' in result.stderr.lower()
+    assert not (tmp_path / 'unrelated').exists()
+    assert not destination.parent.exists()
+
+
+def test_cli_backup_requires_offline_and_existing_output_is_preserved(tmp_path):
+    assert cli(tmp_path, 'init').returncode == 0
+    bundle = tmp_path / 'snapshot.localagent.zip'
+    result = cli(tmp_path, 'backup', 'create', '--output', str(bundle))
+    assert result.returncode != 0
+    assert 'offline' in result.stderr
+    assert not bundle.exists()
+    bundle.write_bytes(b'An existing backup')
+    result = cli(tmp_path, 'backup', 'create', '--output', str(bundle), '--offline')
+    assert result.returncode != 0
+    assert 'exists' in result.stderr
+    assert bundle.read_bytes() == b'An existing backup'
