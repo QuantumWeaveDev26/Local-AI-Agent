@@ -23,7 +23,9 @@ tool was enabled and all file checks used explicitly owned fixture paths.
 
 Ollama 0.40.2 and existing verified `qwen3:1.7b` weights; no new weights downloaded.
 An explicit-context disposable tag was created from those same weights through
-Ollama's local create API. Raw fixtures, harness and reports remain outside Git at
+Ollama's local create API. After the probes, only that disposable tag was removed;
+the original `qwen3:1.7b` model was verified still present. Raw fixtures, harness
+and reports remain outside Git at
 `/workspace/runtime/hermes-prototype-2026-10-12`. Source hashes and pinned links are
 in [the catalog](2026-10-12-prototype-sources.json). No hosted inference, company
 documents, billing changes, external messages or ModelArk keys were used.
