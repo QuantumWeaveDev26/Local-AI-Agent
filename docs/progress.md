@@ -162,3 +162,22 @@ Rulings for this milestone:
 - Adversarial concurrent path replacement is outside the offline contract, not an
   OS sandbox guarantee. Cost if wrong: external mutation could invalidate scope or
   snapshot stability. No such behavior is claimed protected by this delivery.
+
+2026-10-12 Hermes compatibility spike: isolated reviewed revision, Python3.14.7,
+frozen core lock installation. Actual 8K initialization rejected (64K minimum),
+64K initialization accepted but original Ollama tag loaded4K; an explicit num_ctx
+64K clone loaded40960 with approximately6GiB allocation, CPUonly. Native platform
+reference loaded the requested8192 and returnedREADY. First Hermes short chat
+returnedREADY, repeatsaddedperiod; SQLite recall across process restart and stream
+hard cancellation worked. Normal file dispatcher allowed owned fixture reads/writes
+outside cwd, which does not satisfy our project-root contract. No user files or
+existing platform state imported, weights downloaded, hosted model requests, paid
+resource activation or external messages. Runtime remains ours; scope adapter and
+actual Windows/GPU profiling are required before production Hermes integration.
+Detailed source hashes/report in docs/research/hermes/2026-10-12-local-prototype.md.
+
+Publication status at this point: local main2864440 includes the reviewed 140-test
+portable-state milestone. First GitHub push approval was aborted; no successful
+push is claimed. Independent runtime/dependency downloads and local-only probes
+received execution approval and continued. Preserve local commits until publication
+is completed; do not reset or force-push around an unresolved approval.

@@ -129,6 +129,12 @@ as a foundation through an isolated compatibility prototype. See the
 [Hermes assessment](../research/hermes/2026-10-10-evaluation.md). No runtime swap
 has been made and no existing private state is migrated implicitly.
 
+12 October Hermes prototype: pinned separate Python 3.14 runtime verified small
+local chat, persisted recall and no-tool stream cancellation. Actual context/scope
+gaps prevent adoption as the default without an adapter and real host testing.
+Keep the current runtime while evaluating reusable components; see
+[the experiment](../research/hermes/2026-10-12-local-prototype.md).
+
 **User experience:** open a local application, continue a conversation, attach files,
 see a task's status and output, and return to the same project later.
 

@@ -1,0 +1,72 @@
+{
+  "revision": "dce1e9b37581dd62e480a9064dc04a709c2940d3",
+  "python": "3.14.7",
+  "environment": "isolated Linux cloud, no GPU",
+  "sources": [
+    {
+      "path": "pyproject.toml",
+      "sha256": "865992a77dd7be18ce8b2e63c87d2c6bd66a76cb0babaa84ad3de061f5bb5af8",
+      "url": "https://github.com/NousResearch/hermes-agent/blob/dce1e9b37581dd62e480a9064dc04a709c2940d3/pyproject.toml"
+    },
+    {
+      "path": "uv.lock",
+      "sha256": "95a3082629ffecdabb1bad0880ccf5a237d47cd8fb67d86094f6d3d331f4eeac",
+      "url": "https://github.com/NousResearch/hermes-agent/blob/dce1e9b37581dd62e480a9064dc04a709c2940d3/uv.lock"
+    },
+    {
+      "path": "run_agent.py",
+      "sha256": "9fca746dde685859ed084d6f7651a94d8849e8944a145de77f8a177c839cb5ac",
+      "url": "https://github.com/NousResearch/hermes-agent/blob/dce1e9b37581dd62e480a9064dc04a709c2940d3/run_agent.py"
+    },
+    {
+      "path": "agent/agent_init.py",
+      "sha256": "6e41f40147150edbf876bd8a5044296774d97e5977e8d3fda3565316fc7c5481",
+      "url": "https://github.com/NousResearch/hermes-agent/blob/dce1e9b37581dd62e480a9064dc04a709c2940d3/agent/agent_init.py"
+    },
+    {
+      "path": "agent/conversation_loop.py",
+      "sha256": "926435d563ef1b7de1049f5c36897f1cda7376508b98164a68a0cb5192656270",
+      "url": "https://github.com/NousResearch/hermes-agent/blob/dce1e9b37581dd62e480a9064dc04a709c2940d3/agent/conversation_loop.py"
+    },
+    {
+      "path": "agent/transports/chat_completions.py",
+      "sha256": "6b9c0fed10c4c03e3fb0ccada926bb906e91a0e156d140615e3d43efbe00e5ad",
+      "url": "https://github.com/NousResearch/hermes-agent/blob/dce1e9b37581dd62e480a9064dc04a709c2940d3/agent/transports/chat_completions.py"
+    },
+    {
+      "path": "hermes_cli/runtime_provider.py",
+      "sha256": "44d2b73d5136cdaaa9bfeb4763b36a137ed74efcaf01f11c43a6f263d4e8cb19",
+      "url": "https://github.com/NousResearch/hermes-agent/blob/dce1e9b37581dd62e480a9064dc04a709c2940d3/hermes_cli/runtime_provider.py"
+    },
+    {
+      "path": "hermes_cli/config_defaults.py",
+      "sha256": "a2c0f41d58cc0433d39ec7cac35c12f90c38b36c0fcd97d7d8caa0be39028853",
+      "url": "https://github.com/NousResearch/hermes-agent/blob/dce1e9b37581dd62e480a9064dc04a709c2940d3/hermes_cli/config_defaults.py"
+    },
+    {
+      "path": "model_tools.py",
+      "sha256": "872ca571c17379c8df19c0bcf639919bb0cb3a2706efc08e4dc6a1f3d8789662",
+      "url": "https://github.com/NousResearch/hermes-agent/blob/dce1e9b37581dd62e480a9064dc04a709c2940d3/model_tools.py"
+    },
+    {
+      "path": "tools/file_tools.py",
+      "sha256": "2fca3c108f94759f8662c14ddb0e913e68b00ec0bf10fcdb69265b684daa0c50",
+      "url": "https://github.com/NousResearch/hermes-agent/blob/dce1e9b37581dd62e480a9064dc04a709c2940d3/tools/file_tools.py"
+    },
+    {
+      "path": "hermes_state.py",
+      "sha256": "b76fc6af3b7f37ee1de1be62379acb08d56069796eaf3bdf253a480be704e578",
+      "url": "https://github.com/NousResearch/hermes-agent/blob/dce1e9b37581dd62e480a9064dc04a709c2940d3/hermes_state.py"
+    },
+    {
+      "path": "hermes_state_messages.py",
+      "sha256": "5d81a781e61650d04e7d239fae5a59d1aa65632a029b1e14ad9ccb113de93a62",
+      "url": "https://github.com/NousResearch/hermes-agent/blob/dce1e9b37581dd62e480a9064dc04a709c2940d3/hermes_state_messages.py"
+    },
+    {
+      "path": "website/docs/guides/local-ollama-setup.md",
+      "sha256": "45bf7863cf0bff67add1859620c150414206ec964e8d87ffff53b2070a92756e",
+      "url": "https://github.com/NousResearch/hermes-agent/blob/dce1e9b37581dd62e480a9064dc04a709c2940d3/website/docs/guides/local-ollama-setup.md"
+    }
+  ]
+}

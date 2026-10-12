@@ -6,6 +6,12 @@ embedded or replaced it with Hermes. Qwen is our current inference model family;
 Hermes Agent is a runtime that can use local or hosted models. Those are separate
 choices. The project is NousResearch/hermes-agent, not the Hermes model family.
 
+12 October update: an isolated pinned Hermes installation and local prototype are
+now executed in the cloud; our product runtime remains unchanged. See the
+[actual results](2026-10-12-local-prototype.md): small chat/restart recall/cancellation
+worked, but the 8K profile is rejected, actual allocated context differs from the
+64K setting, and default local file scope exceeds our project boundary.
+
 ## Recommendation
 
 Evaluate Hermes as a foundation before independently implementing the larger
