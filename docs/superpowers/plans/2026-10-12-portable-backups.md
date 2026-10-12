@@ -39,15 +39,16 @@ tests/test_backups.py; modify .gitignore.
 
 **Interfaces:** `create_bundle(data_dir: Path, workspace: Path, output: Path,
 offline: bool = False) -> dict`; `inspect_bundle(bundle: Path) -> dict`.
-Format exposes constants, portable-path validation, SQLite validation and staged
-bundle validation; actual names are fixed in the implementation brief/ledger.
+Format exposes `portable_path(name)`, `checked_path(path)`,
+`validate_database(path)`, and `unpack_validated(bundle, staging)`, returning the
+validated counts/models/omissions summary from owned staging.
 
-- [ ] Add real DB/workspace fixtures and failing snapshot/inspection tests: WAL
+- [x] Add real DB/workspace fixtures and failing snapshot/inspection tests: WAL
   rows preserved, hashes/bytes verified, exclusions, immutable output, active lock,
   running tasks, mutated source, path/schema/trigger/corruption/limit rejection.
-- [ ] Run `.venv/bin/python -m pytest tests/test_backups.py -q`; expect missing API.
-- [ ] Implement format checks and streaming offline creation/inspection.
-- [ ] Run `.venv/bin/python -m pytest -q`; expect all tests passing; commit.
+- [x] Run `.venv/bin/python -m pytest tests/test_backups.py -q`; expect missing API.
+- [x] Implement format checks and streaming offline creation/inspection.
+- [x] Run `.venv/bin/python -m pytest -q`; expect all tests passing; commit.
 
 ### Task 2: Restore with no overwrite or replay
 

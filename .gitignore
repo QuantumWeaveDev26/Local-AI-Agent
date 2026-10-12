@@ -11,3 +11,4 @@ workspace/
 .env.*
 !.env.example
 .superpowers/
+*.localagent.zip
