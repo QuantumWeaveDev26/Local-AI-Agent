@@ -2,6 +2,7 @@
 import ipaddress
 import json
 import os
+import re
 import time
 from dataclasses import dataclass, field
 from urllib.parse import urlparse
@@ -56,7 +57,9 @@ class LLM:
             if schema:
                 body['format'] = schema
         else:
-            url = model.base_url + ('/chat/completions' if model.base_url.endswith('/v1') else '/v1/chat/completions')
+            # Compatible providers may use a versioned prefix such as /api/v3.
+            versioned = re.search(r'/v[0-9]+$', urlparse(model.base_url).path)
+            url = model.base_url + ('/chat/completions' if versioned else '/v1/chat/completions')
             body.update(temperature=0, max_tokens=1200)
             if schema:
                 body['response_format'] = {'type':'json_schema','json_schema':{'name':'result','strict':True,'schema':schema}}

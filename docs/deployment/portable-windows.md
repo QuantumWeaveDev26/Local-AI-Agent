@@ -21,6 +21,15 @@ The cloud workspace remains available for source development and Linux testing.
 It has no access to the personal Windows machine. Running the audit/setup commands
 on that machine is the physical step needed to validate deployment there.
 
+12 October update: the user no longer has the previously inserted disk and is not
+sure whether the D: project folder/database remain accessible. Check drives and
+paths read-only before continuing; do not reuse the earlier free-space measurements
+as current facts. See the [missing-disk checks and ModelArk assessment](../research/byteplus/2026-10-12-modelark.md).
+A fresh Git clone on an available internal drive restores source only. Previous
+conversations and project files require the original private database/workspace or
+a backup. Recreate virtual environments and check existing Ollama model storage
+before downloading weights again; preserve existing directories and private data.
+
 The full platform direction remains in the evolving roadmap: persistent chat,
 projects, knowledge/research, memory, specialist coordination, resumable workflows,
 skills, connectors, schedules, evaluation and optional modalities. It will be built

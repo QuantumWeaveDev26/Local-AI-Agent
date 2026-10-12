@@ -15,3 +15,16 @@
   `docs/roadmap/2026-10-10-evolving-platform.md` for proposed capabilities.
 - Report Linux/cloud checks separately from actual Windows/GPU execution. Do not
   claim a proposed feature or unrun hardware check works.
+- ModelArk must introduce no paid usage. The user reported account-level Free
+  Tokens Only mode On on 12 October 2026; this is user-host evidence, not a live
+  account query. Keep the candidate disabled during preparation. Before any live
+  use, verify protection belongs to the intended account/project and supported
+  model; use plain online inference only. Do not disable free-only protection,
+  enroll in data-reward campaigns that require disabling it, purchase Coding Plans,
+  enable paid plugins/managed agents/knowledge bases/storage/model units, or use
+  media generation. Do not treat displayed credits, rate limits or client counters
+  as a guarantee against charges. Never ask for secret API keys in chat.
+- The previously used disk is unavailable; whether the D: checkout/private state
+  is accessible is currently unknown. Check paths/free space read-only before
+  restoring or installing. A Git clone recovers source, not private conversations,
+  files, model weights or virtual environments. Preserve any existing state.

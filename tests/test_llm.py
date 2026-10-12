@@ -63,6 +63,16 @@ def test_remote_model_requires_opt_in(tmp_path):
         LLM(tmp_path/'lock').chat(model,[])
 
 
+@pytest.mark.parametrize('base_path', ['/v1', '/api/v3'])
+def test_openai_compatible_preserves_explicit_api_version(endpoint, tmp_path, base_path):
+    url, requests = endpoint
+    model = Model(id='versioned', name='Versioned', provider='openai_compatible',
+                  model_name='test-model', base_url=url + base_path)
+    result = LLM(tmp_path/'version.lock').chat(model, [{'role':'user','content':'hi'}])
+    assert requests[0][0] == base_path + '/chat/completions'
+    assert result.content == 'hello'
+
+
 def test_disabled_model_rejected(tmp_path):
     model=Model(id='m',name='M',model_name='m',enabled=False)
     with pytest.raises(ValueError, match='disabled'):

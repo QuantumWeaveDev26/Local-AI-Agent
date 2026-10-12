@@ -308,6 +308,14 @@ collaboration. Provider/factory/tool interfaces leave room to add these delibera
 - [Lyzr product and architecture research](docs/research/lyzr/2026-10-10-analysis.md)
 - [Evolving platform roadmap](docs/roadmap/2026-10-10-evolving-platform.md)
 - [Hermes runtime evaluation](docs/research/hermes/2026-10-10-evaluation.md)
+- [ModelArk free-only assessment and missing-disk recovery](docs/research/byteplus/2026-10-12-modelark.md)
+
+ModelArk is an optional provider candidate; the example
+`examples/modelark-glm-free-only.json` is disabled. It has no API key value and was
+not used for a live request. Free Tokens Only mode must remain On for the intended
+account/model. Language-model credits do not cover paid plugins, hosted agent
+runtime, knowledge-base resources or explicit cache storage. Do not disable the
+mode to join the daily-token rewards campaign or to continue after quota suspension.
 
 The roadmap records proposed capabilities; the validation documents record what
 has actually been tested. New ideas can extend and reprioritize the roadmap.

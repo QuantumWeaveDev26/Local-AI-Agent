@@ -1,0 +1,11 @@
+{
+  "id": "modelark-glm-review",
+  "name": "ModelArk GLM 5.2 review candidate (disabled)",
+  "enabled": false,
+  "provider": "openai_compatible",
+  "model_name": "glm-5-2-260617",
+  "base_url": "https://ark.ap-southeast.bytepluses.com/api/v3",
+  "context_length": 8192,
+  "api_key_env": "ARK_API_KEY",
+  "notes": "Preparation only; no live provider validation. Keep disabled until the correct account/project has confirmed Free Tokens Only mode ON and a backend-only model-scoped API key. Use plain Chat Completions with no provider plugins, hosted agents, paid storage or media. Never disable Free Tokens Only mode to recover from 429 SetLimitExceeded. See docs/research/byteplus/2026-10-12-modelark.md. GLM native strict JSON-schema support and reasoning limits are not validated; do not assign this candidate to Manager or schema-based recruitment. The current remote adapter does not enforce context_length or the Ollama thinking flag."
+}

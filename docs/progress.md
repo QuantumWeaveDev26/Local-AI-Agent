@@ -56,3 +56,39 @@ dce1e9b37581dd62e480a9064dc04a709c2940d3, recorded comparison and proposed isola
 prototype before independently building later memory/skills/scheduler/messaging.
 No Hermes installation, integration, migration or performance claim made. Upstream
 installer targets Python3.14; preserve the user's working3.12 environment.
+
+2026-10-12 ModelArk research/preparation: user is an AI full-stack developer and
+requires no paid usage after a reported Seedance auto-debit. Public documentation
+inventory529 entries,157URL variants retrieved with136body extractions including
+two finance documents. Core billing/quota/API/campaign/integration material read;
+not a claim of reading all529entries fully. User explicitly reports Free Tokens
+Only mode On. Mode protects supported online token inference, not auxiliary
+services. Daily-token data campaign requires turning it off; excluded from use.
+No paid-plan purchase, account change, service/resource activation or inference
+request performed; no key requested/used. Hosted agents/tools/KB/storage/media
+and unprotected fallback remain excluded. Saved findings/source catalog and a
+disabled GLM5.2 model example, preserving local defaults.
+
+Compatibility diagnosis: existing OpenAI branch changed /api/v3 into the invalid
+/api/v3/v1/chat/completions path. Local HTTP regression RED, minimal versioned-path
+fix GREEN; full Linux suite79 passed. Prepared JSON validates as disabled. This
+does not validate ModelArk quality/billing, native schema support, reasoning
+passback, context enforcement, or Windows execution. Those limitations are explicit.
+
+Current disk availability is unknown: user lacks the inserted disk and is unsure
+whether D:\Projects\Local-AI-Agent/private state exists. Supplied read-only drive/
+path checks. Cloud/Git source survives; private state cannot be recovered from Git.
+
+Ruling: Apply the small offline URL fix and disabled example within prior
+autonomous coding authorization, without another design gate — no remote service
+is enabled and changes are reversible. Cost if wrong: some explicit versioned
+custom endpoints may require provider-specific adaptation. Existing unversioned
+and /v1 behavior remain covered by tests. Quota-mode status is user-host evidence,
+not a live account verification or implemented billing-policy gate.
+
+Independent ModelArk preparation review: no Critical, Important or Minor findings.
+Reviewer checked URL compatibility, disabled example, cost guidance, links and
+catalog hashes against cached official bodies. Full suite79passed in13.81seconds;
+Windows and live provider/account behavior remain untested. Publication uses the
+requested Naveen-145119 author/committer identity; no credentials/private data
+or retrieved raw documentation bodies enter Git.
